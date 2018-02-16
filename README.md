@@ -1,8 +1,6 @@
-# Arduino RGB LED
+# Games and play project
 
-tbc
-
-[Sample video](https://cloudup.com/clQwFV8Y72N)
+Project developed for the Games and play course at Malmö University. 
 
 ## Run
 
