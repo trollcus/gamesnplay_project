@@ -3,11 +3,15 @@
     var red = document.getElementById('red');
     var green = document.getElementById('green');
     var blue = document.getElementById('blue');
+    var asd = 'hej';
 
     function emitValue(color, e) {
         socket.emit('rgb', {
             color: color,
             value: e.target.value
+        });
+        socket.emit('pushPad', {
+            dataPad: asd
         });
     }
 
@@ -23,4 +27,19 @@
         var color = data.color;
         document.getElementById(color).value = data.value;
     });
+    socket.on('pushPad', function(data) {
+        var state = data;
+        console.log(data);
+        sound.pause();
+        // if(state == 'pause'){
+        //   sound.pause();
+        // }
+    });
+
+    var sound = new Howl({
+      src: ['../sadaccordion.mp3']
+    });
+
+    sound.play();
+
 }());

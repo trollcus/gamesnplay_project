@@ -1,6 +1,7 @@
 'use strict';
 
 const five = require('johnny-five');
+var SerialPort = require("serialport");
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
@@ -16,51 +17,193 @@ app.get('/', function(req, res) {
 five.Board().on('ready', function() {
   console.log('Arduino is ready.');
 
-  // Initial state
-  let state = {
-    red: 1, green: 1, blue: 1
-  };
+//   var pin = new five.Pin(13);
+// setInterval(function(){
+//   pin.query(function(state) {
+//     console.log(state);
+//   });
+// }, 500);
 
-  // Map pins to digital inputs on the board
-  led = new five.Led.RGB({
-    pins: {
-      red: 6,
-      green: 3,
-      blue: 5
+
+// Create a new `button` hardware instance.
+
+const button = new five.Buttons([
+    {
+      pin: 13,
+      isPullup: true,
+      holdtime: 2000
+    },
+    {
+      pin: 12,
+      isPullup: true,
+      holdtime: 2000
+    },
+    {
+      pin: 11,
+      isPullup: true,
+      holdtime: 2000
     }
+  ]);
+
+  button.on("hold", function(button) {
+    // console.log(button.pin);
+    console.log('Pin number ' + button.pin + ' is being held');
+    // console.log( "Pad 13 Standing on plate" );
   });
 
-  // Helper function to set the colors
-  let setStateColor = function(state) {
-    led.color({
-      red: state.red,
-      blue: state.blue,
-      green: state.green
-    });
-  };
+  button.on("press", function(button) {
+    // console.log( "Pad 13 Pad pushed" );
+    // console.log(button.pin);
+    // console.log('Pin number ' + button.pin + ' is being pressed');
+    console.log(button);
+  });
+
+  button.on("release", function(button) {
+    // console.log( "Pad 13 Pad released" );
+    // console.log(button.pin);
+    console.log('Pin number ' + button.pin + ' is being released');
+  });
+
+// var button = new five.Button({
+//   pin: 13,
+//   isPullup: true,
+//   holdtime: 2000
+// });
+// var button1 = new five.Button({
+//   pin: 12,
+//   isPullup: true,
+//   holdtime: 2000
+// });
+// var button2 = new five.Button({
+//   pin: 11,
+//   isPullup: true,
+//   holdtime: 2000
+// });
+
+// button.on("hold", function() {
+//   console.log( "Button held" );
+// });
+// let setStateColor = function(state) {
+//   led.color({
+//     red: state.red,
+//     blue: state.blue,
+//     green: state.green
+//   });
+// };
+//
+//
+// client.on('rgb', function(data) {
+//       state.red = data.color === 'red' ? data.value : state.red;
+//       state.green = data.color === 'green' ? data.value : state.green;
+//       state.blue = data.color === 'blue' ? data.value : state.blue;
+//
+//       // Set the new colors
+//       setStateColor(state);
+//
+//       client.emit('rgb', data);
+//       client.broadcast.emit('rgb', data);
+// });
+
+
+
+// ------------------------------
+
+// button.on("hold", function() {
+//   console.log( "Pad 13 Standing on plate" );
+// });
+//
+// button.on("press", function() {
+//   console.log( "Pad 13 Pad pushed" );
+//
+// });
+//
+// button.on("release", function() {
+//   console.log( "Pad 13 Pad released" );
+// });
+//
+//
+// button1.on("hold", function() {
+//   console.log( "Pin 12 Standing on plate" );
+// });
+//
+// button1.on("press", function() {
+//   console.log( "Pin 12 Pad pushed" );
+//
+// });
+//
+// button1.on("release", function() {
+//   console.log( "Pin 12 Pad released" );
+// });
+//
+//
+// button2.on("hold", function() {
+//   console.log( "Pin 11 Standing on plate" );
+// });
+//
+// button2.on("press", function() {
+//   console.log( "Pin 11 Pad pushed" );
+//
+// });
+//
+// button2.on("release", function() {
+//   console.log( "Pin 11 Pad released" );
+// });
+
+// var pin = new five.Pin({
+//   pin: 13,
+//   mode: 1
+// });
+
+// pin.query(function(state) {
+//   console.log(state);
+// });
+
+// five.Pin.read(pin, function(error, value) {
+//   console.log(value);
+// });
+
+// pin.high();
+// this.digitalRead(13, function(value) {
+//     console.log(value);
+//   });
+
+
+
+// setInterval(function(){
+//   pin.query(function(state) {
+//     console.log(state);
+//     console.log('----------');
+//   });
+// }, 1000);
+
+
+// five.Pin.read(pin, function(error, value) {
+//   console.log(value);
+// });
+
+
+
 
   io.on('connection', function(client) {
     client.on('join', function(handshake) {
       console.log(handshake);
     });
-
-    // Set initial state
-    setStateColor(state);
-
-    client.on('rgb', function(data) {
-      state.red = data.color === 'red' ? data.value : state.red;
-      state.green = data.color === 'green' ? data.value : state.green;
-      state.blue = data.color === 'blue' ? data.value : state.blue;
-
-      // Set the new colors
-      setStateColor(state);
-
-      client.emit('rgb', data);
-      client.broadcast.emit('rgb', data);
+    // client.on('pushPad', function(data) {
+    //
+    //       data = 'pause';
+    //       client.emit('pushPad', data);
+    //       client.broadcast.emit('pushPad', data);
+    // });
+    button.on("press", function(data) {
+      console.log( "Pad pushed" );
+      data = 'pause';
+      client.emit('pushPad', data);
+      client.broadcast.emit('pushPad', data);
     });
 
-    // Turn on the RGB LED
-    led.on();
+
+    // CLIENT HERE AND UPDATE STATE IN ORDER FOR IT TO WORK
+
   });
 });
 
