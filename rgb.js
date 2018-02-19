@@ -54,8 +54,8 @@ const button = new five.Buttons([
   button.on("press", function(button) {
     // console.log( "Pad 13 Pad pushed" );
     // console.log(button.pin);
-    // console.log('Pin number ' + button.pin + ' is being pressed');
-    console.log(button);
+    console.log('Pin number ' + button.pin + ' is being pressed');
+    // console.log(button);
   });
 
   button.on("release", function(button) {
@@ -196,10 +196,19 @@ const button = new five.Buttons([
     // });
     button.on("press", function(data) {
       console.log( "Pad pushed" );
-      data = 'pause';
-      client.emit('pushPad', data);
-      client.broadcast.emit('pushPad', data);
+      let buttonId = data.button;
+      client.emit('pushPad', buttonId);
+      client.broadcast.emit('pushPad', buttonId);
     });
+    button.on("release", function(data) {
+      // console.log( "Pad 13 Pad released" );
+      // console.log(button.pin);
+      data = 'pause';
+      console.log('Pin number ' + button.pin + ' is being released');
+      client.emit('releasePad', 'asd');
+      client.broadcast.emit('releasePad', 'asd');
+    });
+
 
 
     // CLIENT HERE AND UPDATE STATE IN ORDER FOR IT TO WORK
