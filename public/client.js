@@ -93,9 +93,16 @@ var central = new Pizzicato.Sound({
   }
 });
 
+// --- Variables used throughout document
+
 let group = new Pizzicato.Group([accordion, torture, central]); // Add sounds to this group in order to control and to the array below in order to store additional values
 let soundArray = [accordion, torture, central];
 let soundChecker; // init a variable to check which sound is playing
+let historyToAnalyze = []; // Create a history to store values.
+let wrongPad = 0; // Init the counting with a number
+let startTimer = 0; // Init the startTimer with a number
+
+// ---
 
 // arrayInitializer() is the one that starts the process/game. This should be executed when wanting to play/test the game, if not initialized in a document.ready function it can be written in the web console.
 function arrayInitializer() {
@@ -109,6 +116,7 @@ function arrayInitializer() {
 }
 
 function updateSong() {
+  startTimer(); // Start the timer
   group.stop(); // Stopping sound eachtime
   let randNum = Math.floor(Math.random() * (soundArray.length - 0) + 0);
   // console.log(randNum);
@@ -128,8 +136,11 @@ function compareNumber(padPin){
   // console.log(soundChecker.pin);
   let pinPlayed = soundChecker.pin; // Check the current sounds Pin number
   if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
+    endTimer(); // End timer and input the new data
     updateSong(); // Re-run the function of a new song
     return true; // Return a true value if called upon from elsewhere in document
+  } else {
+    wrongPad++;
   }
 }
 
@@ -147,3 +158,20 @@ function shuffle(a) {
     return a;
 }
 // --
+// Lägg variablen uppe bland dem andra
+
+
+function startTimer() {
+  startTimer = new Date().getTime();
+}
+
+function endTimer() {
+  let elapsed = new Date().getTime() - startTimer;
+  let historyItem = soundChecker; // Take the current played sound
+  historyItem['timeElapsed'] = elapsed; // Time elapsed is being pushed in as data
+  historyItem['timesWrongInput'] = wrongPad; // How many times the player gets it wrong
+  historyToAnalyze.push(historyItem); // Push the data into a new array
+  wrongPad = 0; // Resets the pad
+  startTimer = new Date().getTime(); // Resets the timestamp
+  // return elapsed;
+}
