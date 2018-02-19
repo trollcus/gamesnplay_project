@@ -101,6 +101,8 @@ let soundChecker; // init a variable to check which sound is playing
 let historyToAnalyze = []; // Create a history to store values.
 let wrongPad = 0; // Init the counting with a number
 let startTimer = 0; // Init the startTimer with a number
+let globalTimer = 0;
+let elapsedGlobal = 0;
 
 // ---
 
@@ -113,6 +115,7 @@ function arrayInitializer() {
     numb--; // Starting the number from 13 (pin) and going down
   }
   updateSong();
+  startGlobalTimer(); // Start the global timer, call endGlobalTimer() to return global timer value.
 }
 
 function updateSong() {
@@ -158,8 +161,8 @@ function shuffle(a) {
     return a;
 }
 // --
-// Lägg variablen uppe bland dem andra
 
+// In-game timer to track time going to the correct pad
 
 function startTimer() {
   startTimer = new Date().getTime();
@@ -173,5 +176,24 @@ function endTimer() {
   historyToAnalyze.push(historyItem); // Push the data into a new array
   wrongPad = 0; // Resets the pad
   startTimer = new Date().getTime(); // Resets the timestamp
-  // return elapsed;
 }
+// ---
+
+// Global timer to track the whole gameplay time
+
+function startGlobalTimer() {
+  globalTimer = new Date().getTime();
+}
+
+function endGlobalTimer() {
+  elapsedGlobal = new Date().getTime() - startTimer;
+  return elapsedGlobal;
+}
+
+function resetGlobalTimer() {
+  globalTimer = 0;
+  elapsedGlobal = 0;
+  startGlobalTimer();
+}
+
+// ---
