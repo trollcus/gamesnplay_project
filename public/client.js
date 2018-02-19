@@ -3,8 +3,7 @@
     var red = document.getElementById('red');
     var green = document.getElementById('green');
     var blue = document.getElementById('blue');
-    var asd = 'hej';
-    const pinNum = [13, 12, 11];
+
 
 
     function emitValue(color, e) {
@@ -21,11 +20,6 @@
     }
 
 
-
-    red.addEventListener('change', emitValue.bind(null, 'red'));
-    blue.addEventListener('change', emitValue.bind(null, 'blue'));
-    green.addEventListener('change', emitValue.bind(null, 'green'));
-
     socket.on('connect', function(data) {
         socket.emit('join', 'Client is connected!');
     });
@@ -36,23 +30,15 @@
     });
     socket.on('pushPad', function(button) {
         let padPin = button;
-        // console.log(button);
-        // console.log('push');
-        // console.log(data);
+
         let correctPad = compareNumber(padPin);
         if(correctPad === true) {
-          // Emit pin to turn on LED, eventnamn is LEDCorrectfeedback
+          // Emit pin to turn on LED, event name is LEDCorrectfeedback which can be handled on the rgb.js side. Button is the pin number and should be directed to its LED lights.
           socket.emit('LEDCorrectfeedback', button);
         }
-        // console.log(data);
 
-        // sound.pause();
-        // if(state == 'pause'){
-        //   sound.pause();
-        // }
     });
     socket.on('releasePad', function(data) {
-        var state = data;
         // console.log('release');
         // sound.pause();
         // sound.play();
@@ -60,12 +46,6 @@
         //   sound.pause();
         // }
     });
-
-
-
-
-
-    // sound.play();
 
 }());
 
@@ -83,6 +63,7 @@
 */
 //
 
+// Each sound should be created as a object like this. Just change the var name and source and you should be good to go. Don't forget to add the var name to the two arrays below called "group" and "soundArray".
 
 var accordion = new Pizzicato.Sound({
   source: 'file',
@@ -116,9 +97,10 @@ let group = new Pizzicato.Group([accordion, torture, central]); // Add sounds to
 let soundArray = [accordion, torture, central];
 let soundChecker; // init a variable to check which sound is playing
 
+// arrayInitializer() is the one that starts the process/game. This should be executed when wanting to play/test the game, if not initialized in a document.ready function it can be written in the web console.
 function arrayInitializer() {
   shuffle(soundArray); // Shuffles the array using helper function which can be located at the bottom of this doc
-  let numb = 13;
+  let numb = 13; // Start the variable with the PIN on the arduino board. Always start on 13 and downwards
   for(i = 0; i < soundArray.length; i++) {
     soundArray[i]['pin'] = numb; // Add a pin number to each array entry
     numb--; // Starting the number from 13 (pin) and going down
@@ -137,87 +119,26 @@ function updateSong() {
 
 function checker() {
   // var context = Pizzicato.context;
-  return soundChecker; // Check which song is playing
+  return soundChecker; // Check which song is playing by returning the soundchecker variable which is being updated in updateSong()
 }
 
+
+
 function compareNumber(padPin){
-  console.log(soundChecker.pin);
-  let pinPlayed = soundChecker.pin;
-  if(padPin == pinPlayed) {
-    updateSong();
-    return true;
+  // console.log(soundChecker.pin);
+  let pinPlayed = soundChecker.pin; // Check the current sounds Pin number
+  if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
+    updateSong(); // Re-run the function of a new song
+    return true; // Return a true value if called upon from elsewhere in document
   }
 }
 
 
-function tester(){
+// Helper functions
 
 
-  // var sound = new Howl({
-  //   src: ['../sadaccordion.mp3', '../phased_torture.wav', 'central.mp3'],
-  //   loop: true,
-  // });
-
-//   var accordion = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../sadaccordion.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//   }
-// });
-let soundArray = [
-  accordion, torture, central];
-// soundArray[1].play();
-console.log(soundArray);
-
-shuffle(soundArray);
-// soundArray.forEach(function(item){
-//   console.log(item);
-//   // item.push('asd');
-//   item = "asdasd";
-// });
-let numb = 13;
-for(i = 0; i < soundArray.length; i++) {
-  soundArray[i]['pin'] = numb;
-  numb--;
-}
-// soundArray[0] = "value1";
-
-// soundArray.from({length: 13}, () => Math.floor(Math.random() * (14 - 11) + 11));
-console.log(soundArray);
-
-
-  // sound.play();
-  // var torture = new Pizzicato.Sound('../phased_torture.wav');
-  // var central = new Pizzicato.Sound('../central.mp3');
-
-  // let group = new Pizzicato.Group([accordion, torture, central]);
-
-
-  // if(sound.playing()) {
-  //     sound.stop();
-  // }
-  // Math.random() * (13 - 11) + 11;
-  let randNum = Math.floor(Math.random() * (14 - 11) + 11);
-  // console.log(randNum);
-  // let id13 = sound.play();
-  // let id12 = sound.play();
-  // let id11 = sound.play();
-  // var id1 = sound.play();
-  // var id2 = sound.play();
-  let playNumber = 'id' + randNum;
-  console.log(playNumber);
-  // sound.play(playNumber);
-  // id11;
-
-}
-
-
-
-// Helpers
-
+// Shuffle function for mixing the order of an array
+// --
 function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -225,3 +146,4 @@ function shuffle(a) {
     }
     return a;
 }
+// --
