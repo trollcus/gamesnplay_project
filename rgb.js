@@ -47,16 +47,16 @@ const button = new five.Buttons([
 
   button.on("hold", function(button) {
     // console.log(button.pin);
-    // console.log('Pin number ' + button.pin + ' is being held');
+    console.log('Pin number ' + button.pin + ' is being held');
     // console.log( "Pad 13 Standing on plate" );
   });
 
-  // button.on("press", function(button) {
-  //   // console.log( "Pad 13 Pad pushed" );
-  //   // console.log(button.pin);
-  //   console.log('Pin number ' + button.pin + ' is being pressed');
-  //   // console.log(button);
-  // });
+  button.on("press", function(button) {
+    // console.log( "Pad 13 Pad pushed" );
+    // console.log(button.pin);
+    console.log('Pin number ' + button.pin + ' is being pressed');
+    // console.log(button);
+  });
 
   button.on("release", function(button) {
     // console.log( "Pad 13 Pad released" );

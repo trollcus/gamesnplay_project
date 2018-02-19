@@ -70,6 +70,20 @@
 }());
 
 
+// -------------------
+// TOdo
+// -------------------
+/*
+
+1. Timer thats resets after each sound and a global Timer
+2. Play around with "holding" the pad and distorting the sounds
+3. Success sound when hitting correct pad
+
+
+*/
+//
+
+
 var accordion = new Pizzicato.Sound({
   source: 'file',
   options: {
