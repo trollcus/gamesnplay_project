@@ -34,12 +34,15 @@
         var color = data.color;
         document.getElementById(color).value = data.value;
     });
-    socket.on('pushPad', function(data) {
-        let padPin = data;
+    socket.on('pushPad', function(button) {
+        let padPin = button;
+        // console.log(button);
+        // console.log('push');
+        // console.log(data);
         let correctPad = compareNumber(padPin);
-        if(correctPad == true) {
+        if(correctPad === true) {
           // Emit pin to turn on LED, eventnamn is LEDCorrectfeedback
-          socket.emit('LEDCorrectfeedback', data);
+          socket.emit('LEDCorrectfeedback', button);
         }
         // console.log(data);
 
@@ -50,7 +53,7 @@
     });
     socket.on('releasePad', function(data) {
         var state = data;
-        console.log('release');
+        // console.log('release');
         // sound.pause();
         // sound.play();
         // if(state == 'pause'){
@@ -124,6 +127,7 @@ function checker() {
 }
 
 function compareNumber(padPin){
+  console.log(soundChecker.pin);
   let pinPlayed = soundChecker.pin;
   if(padPin == pinPlayed) {
     updateSong();

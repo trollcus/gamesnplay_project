@@ -47,21 +47,21 @@ const button = new five.Buttons([
 
   button.on("hold", function(button) {
     // console.log(button.pin);
-    console.log('Pin number ' + button.pin + ' is being held');
+    // console.log('Pin number ' + button.pin + ' is being held');
     // console.log( "Pad 13 Standing on plate" );
   });
 
-  button.on("press", function(button) {
-    // console.log( "Pad 13 Pad pushed" );
-    // console.log(button.pin);
-    console.log('Pin number ' + button.pin + ' is being pressed');
-    // console.log(button);
-  });
+  // button.on("press", function(button) {
+  //   // console.log( "Pad 13 Pad pushed" );
+  //   // console.log(button.pin);
+  //   console.log('Pin number ' + button.pin + ' is being pressed');
+  //   // console.log(button);
+  // });
 
   button.on("release", function(button) {
     // console.log( "Pad 13 Pad released" );
     // console.log(button.pin);
-    console.log('Pin number ' + button.pin + ' is being released');
+    // console.log('Pin number ' + button.pin + ' is being released');
   });
 
 // var button = new five.Button({
@@ -188,15 +188,24 @@ const button = new five.Buttons([
     client.on('join', function(handshake) {
       console.log(handshake);
     });
+    client.on('LEDCorrectfeedback', function(buttonLED){
+      console.log(buttonLED);
+      console.log('success');
+      // FEEDBACK TO LED HERE
+    });
     // client.on('pushPad', function(data) {
     //
     //       data = 'pause';
     //       client.emit('pushPad', data);
     //       client.broadcast.emit('pushPad', data);
     // });
-    button.on("press", function(data) {
-      console.log( "Pad pushed" );
-      let buttonId = data.button;
+    button.on("press", function(button) {
+      // console.log( "Pad pushed" );
+      let buttonId = button.pin;
+      // console.log(button.pin);
+
+      // client.emit('pushPad', buttonId);
+      // client.broadcast.emit('pushPad', buttonId);
       client.emit('pushPad', buttonId);
       client.broadcast.emit('pushPad', buttonId);
     });
