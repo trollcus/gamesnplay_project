@@ -1,60 +1,39 @@
 (function() {
     var socket = io.connect(window.location.hostname + ':' + 3000);
-    var red = document.getElementById('red');
-    var green = document.getElementById('green');
-    var blue = document.getElementById('blue');
-
-
-
-    function emitValue(color, e) {
-        socket.emit('rgb', {
-            color: color,
-            value: e.target.value
-        });
-        socket.emit('pushPad', {
-            // dataPad: asd
-        });
-        socket.emit('releasePad', {
-            // dataPad: asd
-        });
-    }
-
 
     socket.on('connect', function(data) {
         socket.emit('join', 'Client is connected!');
     });
 
-    socket.on('rgb', function(data) {
-        var color = data.color;
-        document.getElementById(color).value = data.value;
-    });
     socket.on('pushPad', function(button) {
         let padPin = button;
-
+        // console.log(padPin);
         let correctPad = compareNumber(padPin);
+        console.log('pressed');
         if(correctPad === true) {
           // Emit pin to turn on LED, event name is LEDCorrectfeedback which can be handled on the rgb.js side. Button is the pin number and should be directed to its LED lights.
-          socket.emit('LEDCorrectfeedback', button);
+          // socket.emit('LEDCorrectfeedback', button);
+          console.log('correct');
         }
 
     });
-    socket.on('releasePad', function(data) {
+    // socket.on('releasePad', function(data) {
         // console.log('release');
         // sound.pause();
         // sound.play();
         // if(state == 'pause'){
         //   sound.pause();
         // }
-    });
+    // });
     socket.on('holdPad', function(button) {
-        let padPin = button;
-        console.log('hold');
+        // let padPin = button;
+        // console.log('hold');
         holdPad();
-        let correctPad = compareCheck(padPin);
-        if(correctPad === true) {
-          holdPad();
-
-        }
+        // let correctPad = compareCheck(padPin);
+        // if(correctPad === true) {
+        //   holdPad();
+        //
+        // }
         // sound.pause();
         // sound.play();
         // if(state == 'pause'){
@@ -66,20 +45,19 @@
 
 
 // -------------------
-// TOdo
+// Todo
 // -------------------
 /*
 
-1. Timer that's resets after each sound and a global Timer
-2. Play around with "holding" the pad and distorting the sounds
-3. Success sound when hitting correct pad
+1. Success sound when hitting correct pad
+2. Create a json file for each session, should be executed when the game is finished.
+3. Change firmata main loop interval and fine tune it so it does not clog up our communication channel via socket.
 
 
 */
 //
 
 // Soundeffects used on sounds
-
 
 let dubDelay = new Pizzicato.Effects.DubDelay({
     feedback: 0.6,
@@ -105,7 +83,6 @@ let flanger = new Pizzicato.Effects.Flanger({
     feedback: 0.88,
     mix: 0.77
 });
-
 
 
 // Each sound should be created as a object like this. Just change the var name and source and you should be good to go. Don't forget to add the var name to the two arrays below called "group" and "soundArray".
@@ -151,6 +128,10 @@ let startTimerVar = 0; // Init the startTimer with a number
 let globalTimer = 0;
 let elapsedGlobal = 0;
 let executedHold = false; // See if a function holdPad() has been executed.
+let session = { // For the local storage located under helper functions
+  'gameRound': [],
+  'state': true
+}
 
 // ---
 
@@ -168,8 +149,12 @@ function arrayInitializer() {
 
 function updateSong() {
   startTimer(); // Start the timer
-  if(soundChecker != null){
+
+  // if(soundChecker != null){
+  if(soundChecker != null && soundChecker['ifEffect'] == true){ // Check to see if there is any effect on the currently playing sound.
+      // console.log(soundChecker['ifEffect']);
       soundChecker.removeEffect(flanger); // Removes effect if it has been applied
+      soundChecker['ifEffect'] = false;
   }
   group.stop(); // Stopping sound eachtime
   let randNum = Math.floor(Math.random() * (soundArray.length - 0) + 0);
@@ -200,7 +185,8 @@ function holdPad(){
   if(executedHold === false){
     soundChecker.removeEffect(flanger); // Remove any effects
     executedHold = true;
-    group.stop();
+    group.stop(); // Stop the group sound
+    soundChecker['ifEffect'] = true; // Set the soundChecker object to true in order to turn it off later.
     soundChecker.addEffect(flanger); // Add effects if any pin is being held
     soundChecker.play();
   }
@@ -214,16 +200,27 @@ function compareNumber(padPin){
   // console.log(soundChecker.pin);
   let pinPlayed = soundChecker.pin; // Check the current sounds Pin number
   if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
+    color();
     endTimer(); // End timer and input the new data
     updateSong(); // Re-run the function of a new song
     return true; // Return a true value if called upon from elsewhere in document
   } else {
     wrongPad++;
+
   }
 }
 
 
+
+
 // Helper functions
+
+function color(){
+  document.body.style.backgroundColor = 'green';
+  setTimeout(function(){
+    document.body.style.backgroundColor = 'red';
+  }, 1500);
+}
 
 
 // Shuffle function for mixing the order of an array
@@ -251,7 +248,7 @@ function endTimer() {
   historyToAnalyze.push(historyItem); // Push the data into a new array
   //console.log(historyToAnalyze);
   wrongPad = 0; // Resets the pad
-  console.log(elapsed);
+  // console.log(elapsed);
   startTimerVar = new Date().getTime(); // Resets the timestamp
 }
 // ---
@@ -271,6 +268,21 @@ function resetGlobalTimer() {
   globalTimer = 0;
   elapsedGlobal = 0;
   startGlobalTimer();
+}
+
+
+// Use localstorage for the games for window
+
+function localStore() {
+    session.gameRound.push({historyToAnalyze}); // Push the object to session
+    localStorage.setItem('session', JSON.stringify(session)); // Store the object to localStorage
+}
+
+// Use this function to fetch the localStorage if necessery when in need to analyze
+
+function fetchLocalStore() {
+  let restoredSession = JSON.parse(localStorage.getItem('session')); // Fetch the localstorage
+  console.log(restoredSession); // Log the session
 }
 
 // ---

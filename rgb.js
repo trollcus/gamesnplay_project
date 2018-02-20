@@ -31,38 +31,38 @@ const button = new five.Buttons([
     {
       pin: 13,
       isPullup: true,
-      holdtime: 1000
+      holdtime: 500
     },
     {
       pin: 12,
       isPullup: true,
-      holdtime: 1000
+      holdtime: 500
     },
     {
       pin: 11,
       isPullup: true,
-      holdtime: 1000
+      holdtime: 500
     }
   ]);
 
-  button.on("hold", function(button) {
-    // console.log(button.pin);
-    console.log('Pin number ' + button.pin + ' is being held');
-    // console.log( "Pad 13 Standing on plate" );
-  });
-
-  button.on("press", function(button) {
-    // console.log( "Pad 13 Pad pushed" );
-    // console.log(button.pin);
-    console.log('Pin number ' + button.pin + ' is being pressed');
-    // console.log(button);
-  });
-
-  button.on("release", function(button) {
-    // console.log( "Pad 13 Pad released" );
-    // console.log(button.pin);
-    console.log('Pin number ' + button.pin + ' is being released');
-  });
+  // button.on("hold", function(button) {
+  //   // console.log(button.pin);
+  //   console.log('Pin number ' + button.pin + ' is being held');
+  //   // console.log( "Pad 13 Standing on plate" );
+  // });
+  //
+  // button.on("press", function(button) {
+  //   // console.log( "Pad 13 Pad pushed" );
+  //   // console.log(button.pin);
+  //   console.log('Pin number ' + button.pin + ' is being pressed');
+  //   // console.log(button);
+  // });
+  //
+  // button.on("release", function(button) {
+  //   // console.log( "Pad 13 Pad released" );
+  //   // console.log(button.pin);
+  //   console.log('Pin number ' + button.pin + ' is being released');
+  // });
 
   // client.on handles all client events that is being sent from the web page versus client.emit where it is sending data to the page.
   io.on('connection', function(client) {
@@ -70,8 +70,8 @@ const button = new five.Buttons([
       console.log(handshake);
     });
     client.on('LEDCorrectfeedback', function(buttonLED){
-      console.log(buttonLED); // The button id that is correct is being passed here as parameter buttonLED. With this we can send an LED pulse to the correct pad
-      console.log('success');
+      // console.log(buttonLED); // The button id that is correct is being passed here as parameter buttonLED. With this we can send an LED pulse to the correct pad
+      // console.log('success');
       // FEEDBACK TO LED HERE
     });
 
@@ -80,22 +80,22 @@ const button = new five.Buttons([
       let buttonId = button.pin;
       // console.log(button.pin);
       client.emit('pushPad', buttonId);
-      client.broadcast.emit('pushPad', buttonId);
+      // client.broadcast.emit('pushPad', buttonId);
     });
-    button.on("release", function(data) {
-      // console.log( "Pad 13 Pad released" );
-      // console.log(button.pin);
-      data = 'pause';
-      // console.log('Pin number ' + button.pin + ' is being released');
-      client.emit('releasePad', 'asd');
-      client.broadcast.emit('releasePad', 'asd');
-    });
+    // button.on("release", function(data) {
+    //   // console.log( "Pad 13 Pad released" );
+    //   // console.log(button.pin);
+    //   data = 'pause';
+    //   // console.log('Pin number ' + button.pin + ' is being released');
+    //   client.emit('releasePad', 'asd');
+    //   client.broadcast.emit('releasePad', 'asd');
+    // });
     button.on("hold", function(button) {
       // console.log(button.pin);
       let buttonId = button.pin;
       // console.log('Pin number ' + button.pin + ' is being held');
       client.emit('holdPad', buttonId);
-      client.broadcast.emit('holdPad', buttonId);
+      // client.broadcast.emit('holdPad', buttonId);
       // console.log( "Pad 13 Standing on plate" );
     });
 
