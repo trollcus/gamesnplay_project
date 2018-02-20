@@ -31,37 +31,37 @@ const button = new five.Buttons([
     {
       pin: 13,
       isPullup: true,
-      holdtime: 2000
+      holdtime: 1000
     },
     {
       pin: 12,
       isPullup: true,
-      holdtime: 2000
+      holdtime: 1000
     },
     {
       pin: 11,
       isPullup: true,
-      holdtime: 2000
+      holdtime: 1000
     }
   ]);
 
   button.on("hold", function(button) {
     // console.log(button.pin);
-    // console.log('Pin number ' + button.pin + ' is being held');
+    console.log('Pin number ' + button.pin + ' is being held');
     // console.log( "Pad 13 Standing on plate" );
   });
 
   button.on("press", function(button) {
     // console.log( "Pad 13 Pad pushed" );
     // console.log(button.pin);
-    // console.log('Pin number ' + button.pin + ' is being pressed');
+    console.log('Pin number ' + button.pin + ' is being pressed');
     // console.log(button);
   });
 
   button.on("release", function(button) {
     // console.log( "Pad 13 Pad released" );
     // console.log(button.pin);
-    // console.log('Pin number ' + button.pin + ' is being released');
+    console.log('Pin number ' + button.pin + ' is being released');
   });
 
   // client.on handles all client events that is being sent from the web page versus client.emit where it is sending data to the page.
@@ -89,6 +89,14 @@ const button = new five.Buttons([
       console.log('Pin number ' + button.pin + ' is being released');
       client.emit('releasePad', 'asd');
       client.broadcast.emit('releasePad', 'asd');
+    });
+    button.on("hold", function(button) {
+      // console.log(button.pin);
+      let buttonId = button.pin;
+      console.log('Pin number ' + button.pin + ' is being held');
+      client.emit('holdPad', buttonId);
+      client.broadcast.emit('holdPad', buttonId);
+      // console.log( "Pad 13 Standing on plate" );
     });
 
 

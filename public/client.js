@@ -46,6 +46,21 @@
         //   sound.pause();
         // }
     });
+    socket.on('holdPad', function(button) {
+        let padPin = button;
+        console.log('hold');
+        holdPad();
+        let correctPad = compareCheck(padPin);
+        if(correctPad === true) {
+          holdPad();
+
+        }
+        // sound.pause();
+        // sound.play();
+        // if(state == 'pause'){
+        //   sound.pause();
+        // }
+    });
 
 }());
 
@@ -62,6 +77,36 @@
 
 */
 //
+
+// Soundeffects used on sounds
+
+
+let dubDelay = new Pizzicato.Effects.DubDelay({
+    feedback: 0.6,
+    time: 0.7,
+    mix: 0.5,
+    cutoff: 700
+});
+
+let distortion = new Pizzicato.Effects.Delay({
+  gain: 0.1
+});
+
+let ringModulator = new Pizzicato.Effects.RingModulator({
+    speed: 585,
+    distortion: 33,
+    mix: 1
+});
+
+let flanger = new Pizzicato.Effects.Flanger({
+    time: 0.41,
+    speed: 0.74,
+    depth: 0.79,
+    feedback: 0.88,
+    mix: 0.77
+});
+
+
 
 // Each sound should be created as a object like this. Just change the var name and source and you should be good to go. Don't forget to add the var name to the two arrays below called "group" and "soundArray".
 
@@ -93,16 +138,19 @@ var central = new Pizzicato.Sound({
   }
 });
 
+
+
 // --- Variables used throughout document
 
 let group = new Pizzicato.Group([accordion, torture, central]); // Add sounds to this group in order to control and to the array below in order to store additional values
 let soundArray = [accordion, torture, central];
-let soundChecker; // init a variable to check which sound is playing
+let soundChecker = null; // init a variable to check which sound is playing
 let historyToAnalyze = []; // Create a history to store values.
 let wrongPad = 0; // Init the counting with a number
-let startTimer = 0; // Init the startTimer with a number
+let startTimerVar = 0; // Init the startTimer with a number
 let globalTimer = 0;
 let elapsedGlobal = 0;
+let executedHold = false; // See if a function holdPad() has been executed.
 
 // ---
 
@@ -120,6 +168,9 @@ function arrayInitializer() {
 
 function updateSong() {
   startTimer(); // Start the timer
+  if(soundChecker != null){
+      soundChecker.removeEffect(flanger); // Removes effect if it has been applied
+  }
   group.stop(); // Stopping sound eachtime
   let randNum = Math.floor(Math.random() * (soundArray.length - 0) + 0);
   // console.log(randNum);
@@ -134,6 +185,30 @@ function checker() {
 }
 
 
+// Compare if the current sound matches the current pin
+function compareCheck(padPin) {
+  let pinPlayed = soundChecker.pin;
+  if(padPin == pinPlayed) {
+    return true;
+  }
+}
+
+// Function for holding the pad
+function holdPad(){
+  let effectCheck = false;
+  // soundChecker.addEffect(distortion);
+  if(executedHold === false){
+    soundChecker.removeEffect(flanger); // Remove any effects
+    executedHold = true;
+    group.stop();
+    soundChecker.addEffect(flanger); // Add effects if any pin is being held
+    soundChecker.play();
+  }
+  setTimeout(function(){
+    executedHold = false; // Set a timeout on a function so it does not immediately change the variable
+  }, 500);
+
+}
 
 function compareNumber(padPin){
   // console.log(soundChecker.pin);
@@ -165,17 +240,19 @@ function shuffle(a) {
 // In-game timer to track time going to the correct pad
 
 function startTimer() {
-  startTimer = new Date().getTime();
+  startTimerVar = new Date().getTime();
 }
 
 function endTimer() {
-  let elapsed = new Date().getTime() - startTimer;
+  let elapsed = new Date().getTime() - startTimerVar;
   let historyItem = soundChecker; // Take the current played sound
   historyItem['timeElapsed'] = elapsed; // Time elapsed is being pushed in as data
   historyItem['timesWrongInput'] = wrongPad; // How many times the player gets it wrong
   historyToAnalyze.push(historyItem); // Push the data into a new array
+  //console.log(historyToAnalyze);
   wrongPad = 0; // Resets the pad
-  startTimer = new Date().getTime(); // Resets the timestamp
+  console.log(elapsed);
+  startTimerVar = new Date().getTime(); // Resets the timestamp
 }
 // ---
 
@@ -186,8 +263,8 @@ function startGlobalTimer() {
 }
 
 function endGlobalTimer() {
-  elapsedGlobal = new Date().getTime() - startTimer;
-  return elapsedGlobal;
+  elapsedGlobal = new Date().getTime() - startTimerVar;
+  return (elapsedGlobal / 1000); // Return to seconds
 }
 
 function resetGlobalTimer() {
