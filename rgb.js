@@ -86,14 +86,14 @@ const button = new five.Buttons([
       // console.log( "Pad 13 Pad released" );
       // console.log(button.pin);
       data = 'pause';
-      console.log('Pin number ' + button.pin + ' is being released');
+      // console.log('Pin number ' + button.pin + ' is being released');
       client.emit('releasePad', 'asd');
       client.broadcast.emit('releasePad', 'asd');
     });
     button.on("hold", function(button) {
       // console.log(button.pin);
       let buttonId = button.pin;
-      console.log('Pin number ' + button.pin + ' is being held');
+      // console.log('Pin number ' + button.pin + ' is being held');
       client.emit('holdPad', buttonId);
       client.broadcast.emit('holdPad', buttonId);
       // console.log( "Pad 13 Standing on plate" );
