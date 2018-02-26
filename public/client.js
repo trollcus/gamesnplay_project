@@ -1,13 +1,16 @@
 (function() {
     var socket = io.connect(window.location.hostname + ':' + 3000);
+    // require('events').socket.defaultMaxListeners = 100;
+    // socket.setMaxListeners(0);
 
     socket.on('connect', function(data) {
         socket.emit('join', 'Client is connected!');
     });
 
     socket.on('pushPad', function(button) {
+
         let padPin = button;
-        // console.log(padPin);
+        console.log(padPin);
         let correctPad = compareNumber(padPin);
         console.log('pressed');
         if(correctPad === true) {
@@ -87,6 +90,55 @@ let flanger = new Pizzicato.Effects.Flanger({
 
 // Each sound should be created as a object like this. Just change the var name and source and you should be good to go. Don't forget to add the var name to the two arrays below called "group" and "soundArray".
 
+$( document ).ready(function() {
+  var accordion = new Pizzicato.Sound({
+    source: 'file',
+    options: {
+      path: '../sadaccordion.mp3',
+      loop: true
+    }, function() {
+    // accordion.play();
+    }
+  });
+  var torture = new Pizzicato.Sound({
+    source: 'file',
+    options: {
+      path: '../phased_torture.wav',
+      loop: true
+    }, function() {
+    // accordion.play();
+    }
+  });
+  var central = new Pizzicato.Sound({
+    source: 'file',
+    options: {
+      path: '../central.mp3',
+      loop: true
+    }, function() {
+    // accordion.play();
+    }
+  });
+  var rockstar = new Pizzicato.Sound({
+    source: 'file',
+    options: {
+      path: '../rockstar.wav',
+      loop: true
+    }, function() {
+    // accordion.play();
+    }
+  });
+  var candy = new Pizzicato.Sound({
+    source: 'file',
+    options: {
+      path: '../candy.mp3',
+      loop: true
+    }, function() {
+    // accordion.play();
+    }
+  });
+    console.log( "ready!" );
+});
+
 var accordion = new Pizzicato.Sound({
   source: 'file',
   options: {
@@ -114,13 +166,31 @@ var central = new Pizzicato.Sound({
   // accordion.play();
   }
 });
+var rockstar = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../rockstar.wav',
+    loop: true
+  }, function() {
+  // accordion.play();
+  }
+});
+var candy = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../candy.mp3',
+    loop: true
+  }, function() {
+  // accordion.play();
+  }
+});
 
 
 
 // --- Variables used throughout document
 
-let group = new Pizzicato.Group([accordion, torture, central]); // Add sounds to this group in order to control and to the array below in order to store additional values
-let soundArray = [accordion, torture, central];
+let group = new Pizzicato.Group([accordion, torture, central, rockstar, candy]); // Add sounds to this group in order to control and to the array below in order to store additional values
+let soundArray = [accordion, torture, central, rockstar, candy];
 let soundChecker = null; // init a variable to check which sound is playing
 let historyToAnalyze = []; // Create a history to store values.
 let wrongPad = 0; // Init the counting with a number
@@ -141,6 +211,11 @@ function arrayInitializer() {
   let numb = 13; // Start the variable with the PIN on the arduino board. Always start on 13 and downwards
   for(i = 0; i < soundArray.length; i++) {
     soundArray[i]['pin'] = numb; // Add a pin number to each array entry
+    // if(numb === 9){
+    //   soundArray[i]['pin'] = 8; // Add a pin number to each array entry
+    // } else {
+    //   soundArray[i]['pin'] = numb; // Add a pin number to each array entry
+    // }
     numb--; // Starting the number from 13 (pin) and going down
   }
   updateSong();
@@ -243,6 +318,7 @@ function startTimer() {
 function endTimer() {
   let elapsed = new Date().getTime() - startTimerVar;
   let historyItem = soundChecker; // Take the current played sound
+  // let historyItem = new Object(); // Take the current played sound
   historyItem['timeElapsed'] = elapsed; // Time elapsed is being pushed in as data
   historyItem['timesWrongInput'] = wrongPad; // How many times the player gets it wrong
   historyToAnalyze.push(historyItem); // Push the data into a new array
