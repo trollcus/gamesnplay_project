@@ -6,12 +6,21 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-// require('events').EventEmitter.defaultMaxListeners = 100;
+require('events').EventEmitter.defaultMaxListeners = 100;
 io.setMaxListeners(100);
+
 let led = null;
 const memwatch = require('memwatch-next');
 let startTimerVar = new Date().getTime();
+// const board = new five.Board({
+//   port: new SerialPort("dev/cu.usbmodem171", {
+//     baudrate: 9600,
+//     buffersize: 1
+//   })
+// });
 
+// var board1 = new Board();
+// var board = new five.Board();
 
 app.use(express.static(__dirname + '/public'))
 app.get('/', function(req, res) {
@@ -20,6 +29,44 @@ app.get('/', function(req, res) {
 
 five.Board().on('ready', function() {
   console.log('Arduino is ready.');
+
+  // var gps = new five.GPS({
+  //   pins: {rx: 0, tx: 1},
+  //   port: this.io.SERIAL_PORT_IDs.SW_SERIAL1,
+  //   baud: 9600
+  // });
+  // console.log(gps);
+  // gps.sendCommand('Serial1.print("2")');
+  // gps.sendCommand('digitalWrite(2, HIGH)');
+  // gps.sendCommand('Serial1.print(2)');
+  // console.log(gps.latitude)
+  // for(var i=0; i < 100; i++){
+  //   setTimeout(function(){
+  //     gps.sendCommand('digitalWrite(2, HIGH)');
+  //   }, 100);
+  // }
+
+
+  //  var gps = new five.GPS([11, 10]);
+  // const leds1 = this.pinMode(1, five.Pin.PWM);
+  // const leds = new five.Pin([
+  //   {
+  //     pin: 1
+  //   }
+  // ]);
+  // board1.serialConfig({
+  //     portId: SW_SERIAL0,
+  //     baud: 9600,
+  //     rxPin: 0,
+  //     txPin: 1
+  //   });
+  // leds1.digitalWrite(1);
+  // this.pinMode(1, five.Pin.SERVO);
+  // this.servoWrite(1, 2);
+  // this.Serial1.print(2);
+  // Serial1.print(2);
+  // leds.analogWrite(1, 2);
+  // console.log('sent');
 
 //   var pin = new five.Pin(13);
 // setInterval(function(){
@@ -46,17 +93,17 @@ const button = new five.Buttons([
       pin: 11,
       isPullup: true,
       holdtime: 500
+    },
+    {
+      pin: 10,
+      isPullup: true,
+      holdtime: 500
+    },
+    {
+      pin: 9,
+      isPullup: true,
+      holdtime: 500
     }
-    // {
-    //   pin: 10,
-    //   isPullup: true,
-    //   holdtime: 500
-    // },
-    // {
-    //   pin: 8,
-    //   isPullup: true,
-    //   holdtime: 500
-    // }
   ]);
 
 
@@ -98,7 +145,7 @@ const button = new five.Buttons([
     button.on("press", function(button) {
       // console.log(button.pin);
       let elapsedGlobal = new Date().getTime() - startTimerVar;
-      if(elapsedGlobal > 20) {
+      if(elapsedGlobal > 500) {
         startTimerVar = new Date().getTime();
         let buttonId = button.pin;
         // console.log(button.pin);

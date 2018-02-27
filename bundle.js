@@ -1,4 +1,6 @@
-let wrongPad = 0; // Init the counting with a number
+(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
+
+},{}],2:[function(require,module,exports){
 (function() {
     var socket = io.connect(window.location.hostname + ':' + 3000);
     // require('events').socket.defaultMaxListeners = 100;
@@ -14,13 +16,9 @@ let wrongPad = 0; // Init the counting with a number
         console.log(padPin);
         let correctPad = compareNumber(padPin);
         console.log('pressed');
-        if(correctPad == false) {
+        if(correctPad === true) {
           // Emit pin to turn on LED, event name is LEDCorrectfeedback which can be handled on the rgb.js side. Button is the pin number and should be directed to its LED lights.
           // socket.emit('LEDCorrectfeedback', button);
-          // console.log('false');
-          wrongPad++;
-          console.log('wrongpad ' + wrongPad);
-        } else {
           console.log('correct');
         }
 
@@ -193,18 +191,12 @@ var candy = new Pizzicato.Sound({
 
 
 // --- Variables used throughout document
-// const fs = require('fs');
-let totalTime = 0;
-let currentTime = 0;
-let timeInterval;
-let gameName = "";
-let amountCorrect = 0;
-let timesDownloaded = 0;
+const fs = require('fs');
 let group = new Pizzicato.Group([accordion, torture, central, rockstar, candy]); // Add sounds to this group in order to control and to the array below in order to store additional values
 let soundArray = [accordion, torture, central, rockstar, candy];
 let soundChecker = null; // init a variable to check which sound is playing
 let historyToAnalyze = []; // Create a history to store values.
-
+let wrongPad = 0; // Init the counting with a number
 let startTimerVar = 0; // Init the startTimer with a number
 let globalTimer = 0;
 let elapsedGlobal = 0;
@@ -220,8 +212,6 @@ let session = { // For the local storage located under helper functions
 function arrayInitializer(returner) {
   if(returner == true){
     console.log('exited');
-    updateSong(true);
-    group.stop(); // Stop the group sound
     return;
   } else {
     shuffle(soundArray); // Shuffles the array using helper function which can be located at the bottom of this doc
@@ -234,31 +224,26 @@ function arrayInitializer(returner) {
       //   soundArray[i]['pin'] = numb; // Add a pin number to each array entry
       // }
       numb--; // Starting the number from 13 (pin) and going down
-
     }
     updateSong();
-
+    startGlobalTimer(); // Start the global timer, call endGlobalTimer() to return global timer value.
   }
 }
 
-function updateSong(returner) {
-  if(returner == true) {
-    return;
-  } else {
-    // if(soundChecker != null){
-    if(soundChecker != null && soundChecker['ifEffect'] == true){ // Check to see if there is any effect on the currently playing sound.
-        // console.log(soundChecker['ifEffect']);
-        soundChecker.removeEffect(flanger); // Removes effect if it has been applied
-        soundChecker['ifEffect'] = false;
-    }
-    group.stop(); // Stopping sound eachtime
-    let randNum = Math.floor(Math.random() * (soundArray.length - 0) + 0);
-    // console.log(randNum);
-    soundArray[randNum].play(); // Plays random song within the array of sounds
-    soundChecker = soundArray[randNum]; // Check which sound is playing in order to access it everywhere
-    startTimer(); // Start the timer
-  }
+function updateSong() {
+  startTimer(); // Start the timer
 
+  // if(soundChecker != null){
+  if(soundChecker != null && soundChecker['ifEffect'] == true){ // Check to see if there is any effect on the currently playing sound.
+      // console.log(soundChecker['ifEffect']);
+      soundChecker.removeEffect(flanger); // Removes effect if it has been applied
+      soundChecker['ifEffect'] = false;
+  }
+  group.stop(); // Stopping sound eachtime
+  let randNum = Math.floor(Math.random() * (soundArray.length - 0) + 0);
+  // console.log(randNum);
+  soundArray[randNum].play(); // Plays random song within the array of sounds
+  soundChecker = soundArray[randNum]; // Check which sound is playing in order to access it everywhere
 
 }
 
@@ -297,27 +282,16 @@ function holdPad(){
 function compareNumber(padPin){
   // console.log(soundChecker.pin);
   let pinPlayed = soundChecker.pin; // Check the current sounds Pin number
-  console.log('current ' +currentTime);
-  //  console.log('totalTime ' +totalTime);
-  if(currentTime <= totalTime) {
-    if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
-      color();
-      amountCorrect++;
-      endTimer(); // End timer and input the new data
-      updateSong(false); // Re-run the function of a new song
-      return true; // Return a true value if called upon from elsewhere in document
-    } else {
-      //  console.log('wrong');
-      return false;
-    }
+  if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
+    color();
+    endTimer(); // End timer and input the new data
+    updateSong(); // Re-run the function of a new song
+    return true; // Return a true value if called upon from elsewhere in document
   } else {
-    endGame(gameName);
-    window.clearInterval(timeInterval);
+    wrongPad++;
+
   }
-
-
 }
-
 
 
 
@@ -370,7 +344,7 @@ function startGlobalTimer() {
 }
 
 function endGlobalTimer() {
-  elapsedGlobal = new Date().getTime() - globalTimer;
+  elapsedGlobal = new Date().getTime() - startTimerVar;
   return (elapsedGlobal / 1000); // Return to seconds
 }
 
@@ -380,49 +354,33 @@ function resetGlobalTimer() {
   startGlobalTimer();
 }
 
-
-
-function startGame(howMany, name){
-  totalTime = howMany;
-  gameName = name;
-  arrayInitializer(false);
+function startGame(howMany){
+  arrayInitializer();
   startGlobalTimer();
-  timeInterval = setInterval(function(){
-  currentTime = endGlobalTimer();
-    // console.log(currentTime);
+  setInterval(function(){
+    let currentTime = endGlobalTimer();
     if(currentTime > howMany) {
-      endGame(name);
-      window.clearInterval(timeInterval);
-      return;
+      endGame();
     }
   }, 500);
 }
 
 
-function endGame(name){
-  updateSong(true);
+function endGame(){
   arrayInitializer(true);
-  localStore(name);
+  localStore();
 }
 
 
 // Use localstorage for the games for window
 
-function localStore(name) {
+function localStore() {
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
     var yyyy = today.getFullYear();
-    let globalTimer1 = endGlobalTimer();
-    session.gameRound.push({globalTimer1, name, amountCorrect}); // Push the object to session
     session.gameRound.push({historyToAnalyze}); // Push the object to session
-    let sessionJSON = JSON.stringify(session, null, "\t");
-    if(timesDownloaded == 0){
-      download(sessionJSON, name + "-" + today +  "-" + dd + "-" + mm + ".json", 'text/json');
-      timesDownloaded = 1;
-    }
-
-    // fs.writeFile(today + "-" + dd + "-" + mm + ".json", session);
+    fs.writeFile(today + "-" + dd + "-" + mm + ".json", session);
     localStorage.setItem('session', JSON.stringify(session)); // Store the object to localStorage
 }
 
@@ -433,17 +391,6 @@ function fetchLocalStore() {
   console.log(restoredSession); // Log the session
 }
 
-
-function download(text, name, type) {
-    var a = document.createElement("a");
-    var file = new Blob([text], {type: type});
-    a.href = URL.createObjectURL(file);
-    a.download = name;
-    a.click();
-}
-
-function clearLocalStorage(){
-  localStorage.clear();
-}
-
 // ---
+
+},{"fs":1}]},{},[2]);
