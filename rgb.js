@@ -206,7 +206,7 @@ const ledLights = new five.Pins([
           led[1].high();
           break;
         case 6:
-          led[70].high();
+          led[0].high();
           break;
       }
       // led[].high();
