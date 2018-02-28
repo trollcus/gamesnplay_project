@@ -228,7 +228,6 @@ let group = new Pizzicato.Group([accordion, torture, central, rockstar, candy]);
 let soundArray = [accordion, torture, central, rockstar, candy];
 let soundChecker = null; // init a variable to check which sound is playing
 let historyToAnalyze = []; // Create a history to store values.
-
 let startTimerVar = 0; // Init the startTimer with a number
 let globalTimer = 0;
 let elapsedGlobal = 0;
