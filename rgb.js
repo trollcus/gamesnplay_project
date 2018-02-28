@@ -82,27 +82,27 @@ const button = new five.Buttons([
     {
       pin: 13,
       isPullup: true,
-      holdtime: 500
+      holdtime: 1000
     },
     {
       pin: 12,
       isPullup: true,
-      holdtime: 500
+      holdtime: 1000
     },
     {
       pin: 11,
       isPullup: true,
-      holdtime: 500
+      holdtime: 1000
     },
     {
       pin: 10,
       isPullup: true,
-      holdtime: 500
+      holdtime: 1000
     },
     {
       pin: 9,
       isPullup: true,
-      holdtime: 500
+      holdtime: 1000
     }
   ]);
 

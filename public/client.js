@@ -14,12 +14,13 @@ let wrongPad = 0; // Init the counting with a number
         console.log(padPin + ' pressed');
         let correctPad = compareNumber(padPin);
         if(correctPad == false) {
-          // Emit pin to turn on LED, event name is LEDCorrectfeedback which can be handled on the rgb.js side. Button is the pin number and should be directed to its LED lights.
-          // socket.emit('LEDCorrectfeedback', button);
+
           // console.log('false');
           wrongPad++;
           console.log('Wrong inputs = ' + wrongPad);
         } else {
+          // Emit pin to turn on LED, event name is LEDCorrectfeedback which can be handled on the rgb.js side. Button is the pin number and should be directed to its LED lights.
+          // socket.emit('LEDCorrectfeedback', button);
           console.log('correct');
           successSound.play();
         }
