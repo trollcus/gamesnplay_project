@@ -346,8 +346,6 @@ function compareNumber(padPin){
 
 
 
-
-
 // Helper functions
 
 function color(){
