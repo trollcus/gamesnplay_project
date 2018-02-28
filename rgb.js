@@ -141,6 +141,12 @@ const ledLights = new five.Pins([
   // ----- To do here -----
   /*
 
+  1. Change sounds
+  2. Holdpad function? Do something with the LEDs and sound? 
+
+
+  Done.
+
   When playing a sound should emit a event to the server(rgb) and emit the correct LED light
 
   */

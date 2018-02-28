@@ -60,11 +60,12 @@ let wrongPad = 0; // Init the counting with a number
 /*
 
 
-1. LED, connect second board
+
 
 
 Test
-1. Success sound when hitting correct pad
+LED, connect second board
+Success sound when hitting correct pad
 
 */
 //
@@ -328,7 +329,7 @@ function compareNumber(padPin){
     if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
       color();
       amountCorrect++;
-      socket.emit('LEDCorrectfeedback', pinPlayed); // Emit to the correct LED to stop/whatever we want 
+      socket.emit('LEDCorrectfeedback', pinPlayed); // Emit to the correct LED to stop/whatever we want
       endTimer(); // End timer and input the new data
       updateSong(false); // Re-run the function of a new song
       return true; // Return a true value if called upon from elsewhere in document
