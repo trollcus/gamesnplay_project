@@ -43,6 +43,8 @@ var ports = [
   }
  ];
 
+let lastLED;
+
 app.use(express.static(__dirname + '/public'))
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html')
@@ -173,48 +175,56 @@ const ledLights = new five.Pins([
     client.on('join', function(handshake) {
       console.log(handshake);
     });
-    client.on('LEDCorrectfeedback', function(buttonLED){
+    client.on('LEDCorrectfeedback', function(pinNumber){
       // console.log(buttonLED); // The button id that is correct is being passed here as parameter buttonLED. With this we can send an LED pulse to the correct pad
       // console.log('success');
       // FEEDBACK TO LED HERE
+      if(lastLED != null) {
+        led[lastLED].strobe(200); // strobe the current blinking LED faster
+        setTimeout(function(){
+          led[lastLED].low(); // Turn off the current blinking LED after 400ms
+        }, 1600);
+      }
     });
+
     client.on('LEDfeedback', function(pinNumber){
       // FEEDBACK TO LED HERE
       // let pinNumber = pin;
       switch(pinNumber) { // Switchig between the pins assigning pin number 13 to number 8 on the sparkfun
         case 13:
-          led[7].strobe();
+          led[7].strobe(400);
           console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[7].pin ' should blink.');
           break;
         case 12:
-          led[6].strobe();
+          led[6].strobe(400);
           console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[6].pin ' should blink.');
           break;
         case 11:
-          led[5].strobe();
+          led[5].strobe(400);
           console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[5].pin ' should blink.');
           break;
         case 10:
-          led[4].strobe();
+          led[4].strobe(400);
           console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[4].pin ' should blink.');
           break;
         case 9:
-          led[3].strobe();
+          led[3].strobe(400);
           console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[3].pin ' should blink.');
           break;
         case 8:
-          led[2].strobe();
+          led[2].strobe(400);
           console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[2].pin ' should blink.');
           break;
         case 7:
-          led[1].strobe();
+          led[1].strobe(400);
           console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[1].pin ' should blink.');
           break;
         case 6:
-          led[0].strobe();
+          led[0].strobe(400);
           console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[0].pin ' should blink.');
           break;
       }
+      lastLED = pinNumber;
       // led[].high();
     });
 
@@ -227,31 +237,6 @@ const ledLights = new five.Pins([
         // console.log(button.pin);
         client.emit('pushPad', buttonId);
       }
-      // if(lastBtn !== button.pin && buttonTwice !== 1) {
-      //   let buttonId = button.pin;
-      //   buttonTwice = 2;
-      //   console.log(button.pin);
-      //   setTimeout(function(){
-      //
-      //     lastBtn = button.pin;
-      //     client.emit('pushPad', buttonId);
-      //   }, 500);
-      //
-      // } else {
-      //   buttonTwice = 1;
-      // }
-
-
-      // if (button.length > 100) {
-      //   console.log('asd');
-      //
-      // } else {
-      //   // console.log( "Pad pushed" );
-      //
-      //   // client.broadcast.emit('pushPad', buttonId);
-      // }
-
-
     });
     // button.on("release", function(data) {
     //   // console.log( "Pad 13 Pad released" );

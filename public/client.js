@@ -22,6 +22,7 @@ let wrongPad = 0; // Init the counting with a number
           // Emit pin to turn on LED, event name is LEDCorrectfeedback which can be handled on the rgb.js side. Button is the pin number and should be directed to its LED lights.
           // socket.emit('LEDCorrectfeedback', button);
           console.log('correct');
+
           successSound.play();
         }
 
@@ -327,6 +328,7 @@ function compareNumber(padPin){
     if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
       color();
       amountCorrect++;
+      socket.emit('LEDCorrectfeedback', pinPlayed); // Emit to the correct LED to stop/whatever we want 
       endTimer(); // End timer and input the new data
       updateSong(false); // Re-run the function of a new song
       return true; // Return a true value if called upon from elsewhere in document
