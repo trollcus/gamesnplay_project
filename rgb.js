@@ -178,35 +178,41 @@ const ledLights = new five.Pins([
       // console.log('success');
       // FEEDBACK TO LED HERE
     });
-    client.on('LEDfeedback', function(pin){
-      // console.log(buttonLED); // The button id that is correct is being passed here as parameter buttonLED. With this we can send an LED pulse to the correct pad
-      // console.log('success');
+    client.on('LEDfeedback', function(pinNumber){
       // FEEDBACK TO LED HERE
       // let pinNumber = pin;
-      switch(pin) { // Switchig between the pins assigning pin number 13 to number 8 on the sparkfun
+      switch(pinNumber) { // Switchig between the pins assigning pin number 13 to number 8 on the sparkfun
         case 13:
-          led[7].high();
+          led[7].strobe();
+          console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[7].pin ' should blink.');
           break;
         case 12:
-          led[6].high();
+          led[6].strobe();
+          console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[6].pin ' should blink.');
           break;
         case 11:
-          led[5].high();
+          led[5].strobe();
+          console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[5].pin ' should blink.');
           break;
         case 10:
-          led[4].high();
+          led[4].strobe();
+          console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[4].pin ' should blink.');
           break;
         case 9:
-          led[3].high();
+          led[3].strobe();
+          console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[3].pin ' should blink.');
           break;
         case 8:
-          led[2].high();
+          led[2].strobe();
+          console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[2].pin ' should blink.');
           break;
         case 7:
-          led[1].high();
+          led[1].strobe();
+          console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[1].pin ' should blink.');
           break;
         case 6:
-          led[0].high();
+          led[0].strobe();
+          console.log('Pin ' + pinNumber ' is pressed, Led on pin number ' + led[0].pin ' should blink.');
           break;
       }
       // led[].high();
