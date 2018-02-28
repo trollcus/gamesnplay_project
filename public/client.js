@@ -11,17 +11,17 @@ let wrongPad = 0; // Init the counting with a number
     socket.on('pushPad', function(button) {
 
         let padPin = button;
-        console.log(padPin);
+        console.log(padPin + ' pressed');
         let correctPad = compareNumber(padPin);
-        console.log('pressed');
         if(correctPad == false) {
           // Emit pin to turn on LED, event name is LEDCorrectfeedback which can be handled on the rgb.js side. Button is the pin number and should be directed to its LED lights.
           // socket.emit('LEDCorrectfeedback', button);
           // console.log('false');
           wrongPad++;
-          console.log('wrongpad ' + wrongPad);
+          console.log('Wrong inputs = ' + wrongPad);
         } else {
           console.log('correct');
+          successSound.play();
         }
 
     });
@@ -100,7 +100,9 @@ $( document ).ready(function() {
     source: 'file',
     options: {
       path: '../sadaccordion.mp3',
-      loop: true
+      loop: true,
+      attack: 0.9,
+      volume: 0.7
     }, function() {
     // accordion.play();
     }
@@ -109,7 +111,9 @@ $( document ).ready(function() {
     source: 'file',
     options: {
       path: '../phased_torture.wav',
-      loop: true
+      loop: true,
+      attack: 0.9,
+      volume: 0.7
     }, function() {
     // accordion.play();
     }
@@ -118,7 +122,9 @@ $( document ).ready(function() {
     source: 'file',
     options: {
       path: '../central.mp3',
-      loop: true
+      loop: true,
+      attack: 0.9,
+      volume: 0.7
     }, function() {
     // accordion.play();
     }
@@ -127,7 +133,9 @@ $( document ).ready(function() {
     source: 'file',
     options: {
       path: '../rockstar.wav',
-      loop: true
+      loop: true,
+      attack: 0.9,
+      volume: 0.7
     }, function() {
     // accordion.play();
     }
@@ -136,7 +144,18 @@ $( document ).ready(function() {
     source: 'file',
     options: {
       path: '../candy.mp3',
-      loop: true
+      loop: true,
+      attack: 0.9,
+      volume: 0.7
+    }, function() {
+    // accordion.play();
+    }
+  });
+  var successSound = new Pizzicato.Sound({
+    source: 'file',
+    options: {
+      path: '../success1.mp3',
+      loop: false
     }, function() {
     // accordion.play();
     }
@@ -144,51 +163,51 @@ $( document ).ready(function() {
     console.log( "ready!" );
 });
 
-var accordion = new Pizzicato.Sound({
-  source: 'file',
-  options: {
-    path: '../sadaccordion.mp3',
-    loop: true
-  }, function() {
-  // accordion.play();
-  }
-});
-var torture = new Pizzicato.Sound({
-  source: 'file',
-  options: {
-    path: '../phased_torture.wav',
-    loop: true
-  }, function() {
-  // accordion.play();
-  }
-});
-var central = new Pizzicato.Sound({
-  source: 'file',
-  options: {
-    path: '../central.mp3',
-    loop: true
-  }, function() {
-  // accordion.play();
-  }
-});
-var rockstar = new Pizzicato.Sound({
-  source: 'file',
-  options: {
-    path: '../rockstar.wav',
-    loop: true
-  }, function() {
-  // accordion.play();
-  }
-});
-var candy = new Pizzicato.Sound({
-  source: 'file',
-  options: {
-    path: '../candy.mp3',
-    loop: true
-  }, function() {
-  // accordion.play();
-  }
-});
+// var accordion = new Pizzicato.Sound({
+//   source: 'file',
+//   options: {
+//     path: '../sadaccordion.mp3',
+//     loop: true
+//   }, function() {
+//   // accordion.play();
+//   }
+// });
+// var torture = new Pizzicato.Sound({
+//   source: 'file',
+//   options: {
+//     path: '../phased_torture.wav',
+//     loop: true
+//   }, function() {
+//   // accordion.play();
+//   }
+// });
+// var central = new Pizzicato.Sound({
+//   source: 'file',
+//   options: {
+//     path: '../central.mp3',
+//     loop: true
+//   }, function() {
+//   // accordion.play();
+//   }
+// });
+// var rockstar = new Pizzicato.Sound({
+//   source: 'file',
+//   options: {
+//     path: '../rockstar.wav',
+//     loop: true
+//   }, function() {
+//   // accordion.play();
+//   }
+// });
+// var candy = new Pizzicato.Sound({
+//   source: 'file',
+//   options: {
+//     path: '../candy.mp3',
+//     loop: true
+//   }, function() {
+//   // accordion.play();
+//   }
+// });
 
 
 
@@ -228,6 +247,7 @@ function arrayInitializer(returner) {
     let numb = 13; // Start the variable with the PIN on the arduino board. Always start on 13 and downwards
     for(i = 0; i < soundArray.length; i++) {
       soundArray[i]['pin'] = numb; // Add a pin number to each array entry
+      console.log('Object ' + soundArray[i] + ' has been assigned number ' + numb);
       // if(numb === 9){
       //   soundArray[i]['pin'] = 8; // Add a pin number to each array entry
       // } else {
@@ -383,6 +403,7 @@ function resetGlobalTimer() {
 
 
 function startGame(howMany, name){
+  timesDownloaded = 0;
   totalTime = howMany;
   gameName = name;
   arrayInitializer(false);
@@ -423,7 +444,7 @@ function localStore(name) {
     }
 
     // fs.writeFile(today + "-" + dd + "-" + mm + ".json", session);
-    localStorage.setItem('session', JSON.stringify(session)); // Store the object to localStorage
+    // localStorage.setItem('session', JSON.stringify(session)); // Store the object to localStorage
 }
 
 // Use this function to fetch the localStorage if necessery when in need to analyze
