@@ -6,9 +6,10 @@
   "dependencies": {
     "express": "^4.13.4",
     "file-system": "^2.2.2",
+    "firmata": "^0.19.1",
     "johnny-five": "^0.9.56",
     "memwatch-next": "^0.3.0",
-    "serialport": "^6.0.5",
+    "serialport": "^6.1.1",
     "socket.io": "^1.4.6",
     "stream-throttle": "^0.1.3"
   },

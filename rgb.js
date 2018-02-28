@@ -21,13 +21,33 @@ let startTimerVar = new Date().getTime();
 
 // var board1 = new Board();
 // var board = new five.Board();
+// let boards = new five.Boards([{
+//     id: "MEGA",
+//     port: "/dev/cu.usbmodem****"
+//   },
+//   {
+//     id: "LED",
+//     port: "/dev/cu.usbmserial-A********"
+//   }
+// ]);
+var ports = [
+  { id: "MEGA", port: "/dev/cu.usbmodem1411"
+  },
+  {
+    id: "LED",
+    port: "/dev/cu.usbserial-A505M5P6",
+    baudrate: 9600,
+    buffersize: 1
+  }
+ ];
 
 app.use(express.static(__dirname + '/public'))
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html')
 });
 
-five.Board().on('ready', function() {
+// new five.Boards(ports).on('ready', function() {
+new five.Boards(ports).on('ready', function() {
   console.log('Arduino is ready.');
 
   // var gps = new five.GPS({
@@ -35,6 +55,12 @@ five.Board().on('ready', function() {
   //   port: this.io.SERIAL_PORT_IDs.SW_SERIAL1,
   //   baud: 9600
   // });
+  // var gps = new five.GPS({
+  //   pins: {rx: 0, tx: 1},
+  //   port: this.io.SERIAL_PORT_IDs.SW_SERIAL1,
+  //   baud: 9600
+  // });
+
   // console.log(gps);
   // gps.sendCommand('Serial1.print("2")');
   // gps.sendCommand('digitalWrite(2, HIGH)');
@@ -45,6 +71,66 @@ five.Board().on('ready', function() {
   //     gps.sendCommand('digitalWrite(2, HIGH)');
   //   }, 100);
   // }
+
+  // const leds1 = this.pinMode(1, five.Pin.PWM);
+  var led = new five.Pins([{
+    pin: 2,
+    board: this.byId("LED"),
+  },
+  {
+    pin: 3,
+    board: this.byId("LED")
+  },
+  {
+    pin: 4,
+    board: this.byId("LED")
+  },
+  {
+    pin: 5,
+    board: this.byId("LED")
+  },
+  {
+    pin: 6,
+    board: this.byId("LED")
+  },
+  {
+    pin: 7,
+    board: this.byId("LED")
+  },
+  {
+    pin: 8,
+    board: this.byId("LED")
+
+  },
+  {
+    pin: 9,
+    board: this.byId("LED")
+  },
+]);
+  // var pin = new five.Pin({
+  //   pin: 7,
+  //   board: this.byId("LED")
+  //
+  // });
+  // led[0].high();
+  // led[1].high();
+  // led[2].high();
+  // led[3].high();
+  // led[4].high();
+  // led[5].high();
+  // led[6].high();
+  // led[7].high();
+
+  // five.Pin.write(pin, 1);
+  // for(var i = 0; i < 20; i++){
+  //   setTimeout(function(){
+  //     led.high();
+  //   }, i * 500);
+  //   setTimeout(function(){
+  //     led.low();
+  //   }, i * 1000);
+  // }
+
 
 
   //  var gps = new five.GPS([11, 10]);
@@ -80,26 +166,31 @@ five.Board().on('ready', function() {
 
 const button = new five.Buttons([
     {
+      board: this.byId("MEGA"),
       pin: 13,
       isPullup: true,
       holdtime: 1000
     },
     {
+      board: this.byId("MEGA"),
       pin: 12,
       isPullup: true,
       holdtime: 1000
     },
     {
+      board: this.byId("MEGA"),
       pin: 11,
       isPullup: true,
       holdtime: 1000
     },
     {
+      board: this.byId("MEGA"),
       pin: 10,
       isPullup: true,
       holdtime: 1000
     },
     {
+      board: this.byId("MEGA"),
       pin: 9,
       isPullup: true,
       holdtime: 1000

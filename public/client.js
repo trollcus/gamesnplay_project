@@ -58,10 +58,12 @@ let wrongPad = 0; // Init the counting with a number
 // -------------------
 /*
 
-1. Success sound when hitting correct pad
-2. Create a json file for each session, should be executed when the game is finished.
-3. Change firmata main loop interval and fine tune it so it does not clog up our communication channel via socket.
 
+1. LED, connect second board
+
+
+Test
+1. Success sound when hitting correct pad
 
 */
 //
