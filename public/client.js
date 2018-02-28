@@ -59,7 +59,9 @@ let wrongPad = 0; // Init the counting with a number
 // -------------------
 /*
 
-
+1. Rewrite function for the game to end after several seconds between interactions instead
+2. Keep the seconds between interactons dynamic depending of how well the player are doing?
+3. Add sound support for Feedback if bad/good > Point system to track
 
 
 
