@@ -279,6 +279,7 @@ function updateSong(returner) {
     // console.log(randNum);
     soundArray[randNum].play(); // Plays random song within the array of sounds
     soundChecker = soundArray[randNum]; // Check which sound is playing in order to access it everywhere
+    socket.emit('LEDfeedback', soundArray[randNum].pin); // Emit to the LEDs the current pad
     startTimer(); // Start the timer
   }
 

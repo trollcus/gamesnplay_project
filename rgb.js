@@ -31,7 +31,9 @@ let startTimerVar = new Date().getTime();
 //   }
 // ]);
 var ports = [
-  { id: "MEGA", port: "/dev/cu.usbmodem1411"
+  {
+    id: "MEGA",
+    port: "/dev/cu.usbmodem1411"
   },
   {
     id: "LED",
@@ -131,7 +133,16 @@ const ledLights = new five.Pins([
   // led[5].high();
   // led[6].high();
   // led[7].high();
+  // led[nr].strobe(); // Strobes a light with 100ms interval
 
+
+  // ----- To do here -----
+  /*
+
+  When playing a sound should emit a event to the server(rgb) and emit the correct LED light
+
+  */
+  // ------
 
 
   // button.on("hold", function(button) {
@@ -166,6 +177,39 @@ const ledLights = new five.Pins([
       // console.log(buttonLED); // The button id that is correct is being passed here as parameter buttonLED. With this we can send an LED pulse to the correct pad
       // console.log('success');
       // FEEDBACK TO LED HERE
+    });
+    client.on('LEDfeedback', function(pin){
+      // console.log(buttonLED); // The button id that is correct is being passed here as parameter buttonLED. With this we can send an LED pulse to the correct pad
+      // console.log('success');
+      // FEEDBACK TO LED HERE
+      // let pinNumber = pin;
+      switch(pin) { // Switchig between the pins assigning pin number 13 to number 8 on the sparkfun
+        case 13:
+          led[7].high();
+          break;
+        case 12:
+          led[6].high();
+          break;
+        case 11:
+          led[5].high();
+          break;
+        case 10:
+          led[4].high();
+          break;
+        case 9:
+          led[3].high();
+          break;
+        case 8:
+          led[2].high();
+          break;
+        case 7:
+          led[1].high();
+          break;
+        case 6:
+          led[70].high();
+          break;
+      }
+      // led[].high();
     });
 
     button.on("press", function(button) {
