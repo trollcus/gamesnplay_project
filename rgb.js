@@ -50,117 +50,6 @@ app.get('/', function(req, res) {
 new five.Boards(ports).on('ready', function() {
   console.log('Arduino is ready.');
 
-  // var gps = new five.GPS({
-  //   pins: {rx: 0, tx: 1},
-  //   port: this.io.SERIAL_PORT_IDs.SW_SERIAL1,
-  //   baud: 9600
-  // });
-  // var gps = new five.GPS({
-  //   pins: {rx: 0, tx: 1},
-  //   port: this.io.SERIAL_PORT_IDs.SW_SERIAL1,
-  //   baud: 9600
-  // });
-
-  // console.log(gps);
-  // gps.sendCommand('Serial1.print("2")');
-  // gps.sendCommand('digitalWrite(2, HIGH)');
-  // gps.sendCommand('Serial1.print(2)');
-  // console.log(gps.latitude)
-  // for(var i=0; i < 100; i++){
-  //   setTimeout(function(){
-  //     gps.sendCommand('digitalWrite(2, HIGH)');
-  //   }, 100);
-  // }
-
-  // const leds1 = this.pinMode(1, five.Pin.PWM);
-  var led = new five.Pins([{
-    pin: 2,
-    board: this.byId("LED"),
-  },
-  {
-    pin: 3,
-    board: this.byId("LED")
-  },
-  {
-    pin: 4,
-    board: this.byId("LED")
-  },
-  {
-    pin: 5,
-    board: this.byId("LED")
-  },
-  {
-    pin: 6,
-    board: this.byId("LED")
-  },
-  {
-    pin: 7,
-    board: this.byId("LED")
-  },
-  {
-    pin: 8,
-    board: this.byId("LED")
-
-  },
-  {
-    pin: 9,
-    board: this.byId("LED")
-  },
-]);
-  // var pin = new five.Pin({
-  //   pin: 7,
-  //   board: this.byId("LED")
-  //
-  // });
-  // led[0].high();
-  // led[1].high();
-  // led[2].high();
-  // led[3].high();
-  // led[4].high();
-  // led[5].high();
-  // led[6].high();
-  // led[7].high();
-
-  // five.Pin.write(pin, 1);
-  // for(var i = 0; i < 20; i++){
-  //   setTimeout(function(){
-  //     led.high();
-  //   }, i * 500);
-  //   setTimeout(function(){
-  //     led.low();
-  //   }, i * 1000);
-  // }
-
-
-
-  //  var gps = new five.GPS([11, 10]);
-  // const leds1 = this.pinMode(1, five.Pin.PWM);
-  // const leds = new five.Pin([
-  //   {
-  //     pin: 1
-  //   }
-  // ]);
-  // board1.serialConfig({
-  //     portId: SW_SERIAL0,
-  //     baud: 9600,
-  //     rxPin: 0,
-  //     txPin: 1
-  //   });
-  // leds1.digitalWrite(1);
-  // this.pinMode(1, five.Pin.SERVO);
-  // this.servoWrite(1, 2);
-  // this.Serial1.print(2);
-  // Serial1.print(2);
-  // leds.analogWrite(1, 2);
-  // console.log('sent');
-
-//   var pin = new five.Pin(13);
-// setInterval(function(){
-//   pin.query(function(state) {
-//     console.log(state);
-//   });
-// }, 500);
-
 
 // Create a new `button` hardware instance.
 
@@ -196,6 +85,52 @@ const button = new five.Buttons([
       holdtime: 1000
     }
   ]);
+
+// New instance of Ledlights on the LED board.
+
+const ledLights = new five.Pins([
+    {
+      pin: 2,
+      board: this.byId("LED"),
+    },
+    {
+      pin: 3,
+      board: this.byId("LED")
+    },
+    {
+      pin: 4,
+      board: this.byId("LED")
+    },
+    {
+      pin: 5,
+      board: this.byId("LED")
+    },
+    {
+      pin: 6,
+      board: this.byId("LED")
+    },
+    {
+      pin: 7,
+      board: this.byId("LED")
+    },
+    {
+      pin: 8,
+      board: this.byId("LED")
+    },
+    {
+      pin: 9,
+      board: this.byId("LED")
+    },
+  ]);
+
+  // led[0].high();
+  // led[1].high();
+  // led[2].high();
+  // led[3].high();
+  // led[4].high();
+  // led[5].high();
+  // led[6].high();
+  // led[7].high();
 
 
 
