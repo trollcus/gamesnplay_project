@@ -13,6 +13,8 @@ let wrongPad = 0; // Init the counting with a number
         let padPin = button;
         console.log(padPin + ' pressed');
         let correctPad = compareNumber(padPin);
+          // socket.emit('LEDCorrectfeedback', pinPlayed); // Emit to the correct LED to stop/whatever we want
+        // socket.emit('LEDfeedback', button); // Emit to the correct LED to stop/whatever we want
         if(correctPad == false) {
 
           // console.log('false');
@@ -58,6 +60,10 @@ let wrongPad = 0; // Init the counting with a number
 // Todo
 // -------------------
 /*
+
+Array of current sound, -> Multiple sounds at the same time
+Dynamic timer with different pads have different timers
+More success sound / More juicy feedback 
 
 1. Rewrite function for the game to end after several seconds between interactions instead
 2. Keep the seconds between interactons dynamic depending of how well the player are doing?
@@ -170,51 +176,51 @@ $( document ).ready(function() {
     console.log( "ready!" );
 });
 
-// var accordion = new Pizzicato.Sound({
-//   source: 'file',
-//   options: {
-//     path: '../sadaccordion.mp3',
-//     loop: true
-//   }, function() {
-//   // accordion.play();
-//   }
-// });
-// var torture = new Pizzicato.Sound({
-//   source: 'file',
-//   options: {
-//     path: '../phased_torture.wav',
-//     loop: true
-//   }, function() {
-//   // accordion.play();
-//   }
-// });
-// var central = new Pizzicato.Sound({
-//   source: 'file',
-//   options: {
-//     path: '../central.mp3',
-//     loop: true
-//   }, function() {
-//   // accordion.play();
-//   }
-// });
-// var rockstar = new Pizzicato.Sound({
-//   source: 'file',
-//   options: {
-//     path: '../rockstar.wav',
-//     loop: true
-//   }, function() {
-//   // accordion.play();
-//   }
-// });
-// var candy = new Pizzicato.Sound({
-//   source: 'file',
-//   options: {
-//     path: '../candy.mp3',
-//     loop: true
-//   }, function() {
-//   // accordion.play();
-//   }
-// });
+var accordion = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../sadaccordion.mp3',
+    loop: true
+  }, function() {
+  // accordion.play();
+  }
+});
+var torture = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../phased_torture.wav',
+    loop: true
+  }, function() {
+  // accordion.play();
+  }
+});
+var central = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../central.mp3',
+    loop: true
+  }, function() {
+  // accordion.play();
+  }
+});
+var rockstar = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../rockstar.wav',
+    loop: true
+  }, function() {
+  // accordion.play();
+  }
+});
+var candy = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../candy.mp3',
+    loop: true
+  }, function() {
+  // accordion.play();
+  }
+});
 
 
 
@@ -282,7 +288,7 @@ function updateSong(returner) {
     // console.log(randNum);
     soundArray[randNum].play(); // Plays random song within the array of sounds
     soundChecker = soundArray[randNum]; // Check which sound is playing in order to access it everywhere
-    socket.emit('LEDfeedback', soundArray[randNum].pin); // Emit to the LEDs the current pad
+    // socket.emit('LEDfeedback', soundArray[randNum].pin); // Emit to the LEDs the current pad
     startTimer(); // Start the timer
   }
 
@@ -330,7 +336,7 @@ function compareNumber(padPin){
     if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
       color();
       amountCorrect++;
-      socket.emit('LEDCorrectfeedback', pinPlayed); // Emit to the correct LED to stop/whatever we want
+
       endTimer(); // End timer and input the new data
       updateSong(false); // Re-run the function of a new song
       return true; // Return a true value if called upon from elsewhere in document
