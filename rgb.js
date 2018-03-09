@@ -1,4 +1,5 @@
 'use strict';
+'use warnings';
 
 const five = require('johnny-five');
 var SerialPort = require("serialport");
@@ -8,6 +9,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 require('events').EventEmitter.defaultMaxListeners = 100;
 io.setMaxListeners(100);
+// io.setNoDelay(true);
 
 let led = null;
 const memwatch = require('memwatch-next');
@@ -62,31 +64,31 @@ const button = new five.Buttons([
       // board: this.byId("MEGA"),
       pin: 13,
       isPullup: true,
-      holdtime: 1000
+      holdtime: 5000
     },
     {
       // board: this.byId("MEGA"),
       pin: 12,
       isPullup: true,
-      holdtime: 1000
+      holdtime: 5000
     },
     {
       // board: this.byId("MEGA"),
       pin: 11,
       isPullup: true,
-      holdtime: 1000
+      holdtime: 5000
     },
     {
       // board: this.byId("MEGA"),
       pin: 10,
       isPullup: true,
-      holdtime: 1000
+      holdtime: 5000
     },
     {
       // board: this.byId("MEGA"),
       pin: 9,
       isPullup: true,
-      holdtime: 1000
+      holdtime: 5000
     }
   ]);
 
@@ -159,12 +161,12 @@ const button = new five.Buttons([
   //   // console.log( "Pad 13 Standing on plate" );
   // });
   //
-  button.on("press", function(button) {
-    // console.log( "Pad 13 Pad pushed" );
-    // console.log(button.pin);
-    console.log('Pin number ' + button.pin + ' is being pressed');
-    // console.log(button);
-  });
+  // button.on("press", function(button) {
+  //   // console.log( "Pad 13 Pad pushed" );
+  //   // console.log(button.pin);
+  //   console.log('Pin number ' + button.pin + ' is being pressed');
+  //   // console.log(button);
+  // });
   //
   // button.on("release", function(button) {
   //   // console.log( "Pad 13 Pad released" );
@@ -193,78 +195,78 @@ const button = new five.Buttons([
       }
     });
 
-    client.on('LEDfeedback', function(pinNumber){
-      // FEEDBACK TO LED HERE
-      // let pinNumber = pin;
-      switch(pinNumber) { // Switchig between the pins assigning pin number 13 to number 8 on the sparkfun
-        case 13:
-          setInterval(function(){
-              ledLights[7].high();
-          }, 200);
-          setInterval(function(){
-            ledLights[7].high();
-          }, 400);
-          // ledLights[7].blink(400);
-          console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[7].pin + ' should blink.');
-          break;
-        case 12:
-          ledLights[6].blink(400);
-          console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[6].pin + ' should blink.');
-          break;
-        case 11:
-          ledLights[5].blink(400);
-          console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[5].pin + ' should blink.');
-          break;
-        case 10:
-          ledLights[4].blink(400);
-          console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[4].pin + ' should blink.');
-          break;
-        case 9:
-        let intervalfunc = setInterval(function(){
-            setTimeout(function(){
-              ledLights[2].high();
-              console.log('on');
-            }, 0);
-            setTimeout(function(){
-              ledLights[2].low();
-              console.log('off');
-            }, 25);
-              // ledLights[3].high();
-              // console.log('on');
-                console.log('----');
-          }, 50);
-          setTimeout(function(){
-            clearInterval(intervalfunc);
-          }, 1000);
-          // setInterval(function(){
-          //   ledLights[3].low();
-          //   console.log('off');
-          // }, 1200);
-          // ledLights[3].blink(400);
-          console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[3].pin + ' should blink.');
-          break;
-        case 8:
-          setInterval(function(){
-              ledLights[2].high();
-          }, 200);
-          setInterval(function(){
-            ledLights[2].high();
-          }, 400);
-          // ledLights[2].blink(400);
-          console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[2].pin + ' should blink.');
-          break;
-        case 7:
-          ledLights[1].blink(400);
-          console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[1].pin + ' should blink.');
-          break;
-        case 6:
-          ledLights[0].blink(400);
-          console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[0].pin + ' should blink.');
-          break;
-      }
-      lastLED = pinNumber;
-      // led[].high();
-    });
+    // client.on('LEDfeedback', function(pinNumber){
+    //   // FEEDBACK TO LED HERE
+    //   // let pinNumber = pin;
+    //   switch(pinNumber) { // Switchig between the pins assigning pin number 13 to number 8 on the sparkfun
+    //     case 13:
+    //       setInterval(function(){
+    //           ledLights[7].high();
+    //       }, 200);
+    //       setInterval(function(){
+    //         ledLights[7].high();
+    //       }, 400);
+    //       // ledLights[7].blink(400);
+    //       console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[7].pin + ' should blink.');
+    //       break;
+    //     case 12:
+    //       ledLights[6].blink(400);
+    //       console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[6].pin + ' should blink.');
+    //       break;
+    //     case 11:
+    //       ledLights[5].blink(400);
+    //       console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[5].pin + ' should blink.');
+    //       break;
+    //     case 10:
+    //       ledLights[4].blink(400);
+    //       console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[4].pin + ' should blink.');
+    //       break;
+    //     case 9:
+    //     let intervalfunc = setInterval(function(){
+    //         setTimeout(function(){
+    //           ledLights[2].high();
+    //           console.log('on');
+    //         }, 0);
+    //         setTimeout(function(){
+    //           ledLights[2].low();
+    //           console.log('off');
+    //         }, 25);
+    //           // ledLights[3].high();
+    //           // console.log('on');
+    //             console.log('----');
+    //       }, 50);
+    //       setTimeout(function(){
+    //         clearInterval(intervalfunc);
+    //       }, 1000);
+    //       // setInterval(function(){
+    //       //   ledLights[3].low();
+    //       //   console.log('off');
+    //       // }, 1200);
+    //       // ledLights[3].blink(400);
+    //       console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[3].pin + ' should blink.');
+    //       break;
+    //     case 8:
+    //       setInterval(function(){
+    //           ledLights[2].high();
+    //       }, 200);
+    //       setInterval(function(){
+    //         ledLights[2].high();
+    //       }, 400);
+    //       // ledLights[2].blink(400);
+    //       console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[2].pin + ' should blink.');
+    //       break;
+    //     case 7:
+    //       ledLights[1].blink(400);
+    //       console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[1].pin + ' should blink.');
+    //       break;
+    //     case 6:
+    //       ledLights[0].blink(400);
+    //       console.log('Pin ' + pinNumber + ' is pressed, Led on pin number ' + ledLights[0].pin + ' should blink.');
+    //       break;
+    //   }
+    //   lastLED = pinNumber;
+    //   // led[].high();
+    // });
 
     button.on("press", function(button) {
       console.log(button.pin);
