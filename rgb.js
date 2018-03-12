@@ -57,6 +57,7 @@ new five.Boards(ports).on('ready', function() {
   console.log('Arduino is ready.');
 
 
+
 // Create a new `button` hardware instance.
 
 const button = new five.Buttons([
@@ -91,6 +92,7 @@ const button = new five.Buttons([
       holdtime: 5000
     }
   ]);
+
 
 // New instance of Ledlights on the LED board.
 
@@ -128,6 +130,51 @@ const button = new five.Buttons([
 //       board: this.byId("LED")
 //     },
 //   ]);
+  // setTimeout(function(){
+  //   ledLights[0].high();
+  //   ledLights[1].high();
+  //   ledLights[2].high();
+  //   ledLights[3].high();
+  //   ledLights[4].high();
+  //   ledLights[5].high();
+  //   ledLights[6].high();
+  //   ledLights[7].high();
+  // }, 1000);
+  //
+  // setTimeout(function(){
+  //   ledLights[0].low();
+  //   ledLights[1].low();
+  //   ledLights[2].low();
+  //   ledLights[3].low();
+  //   ledLights[4].low();
+  //   ledLights[5].low();
+  //   ledLights[6].low();
+  //   ledLights[7].low();
+  //   console.log('low');
+  // }, 5000);
+
+  // let intervalfunc = setInterval(function(){
+  //         setTimeout(function(){
+  //           ledLights[0].high();
+  //           console.log('on');
+  //         }, 0);
+  //         setTimeout(function(){
+  //           ledLights[0].low();
+  //           console.log('off');
+  //         }, 50);
+  //           // ledLights[3].high();
+  //           // console.log('on');
+  //             console.log('----');
+  //       }, 100);
+
+  //
+  // setTimeout(function(){
+  //     ledLights[0].high();
+  // }, 500);
+  //
+  // setTimeout(function(){
+  //   ledLights[0].low();
+  // }, 10000);
 
   // led[0].high();
   // led[1].high();
@@ -161,18 +208,19 @@ const button = new five.Buttons([
   //   // console.log( "Pad 13 Standing on plate" );
   // });
   //
-  // button.on("press", function(button) {
-  //   // console.log( "Pad 13 Pad pushed" );
-  //   // console.log(button.pin);
-  //   console.log('Pin number ' + button.pin + ' is being pressed');
-  //   // console.log(button);
-  // });
+  button.on("press", function(button) {
+    // console.log( "Pad 13 Pad pushed" );
+    // console.log(button.pin);
+    console.log('Pin number ' + button.pin + ' is being pressed');
+
+    // console.log(button);
+  });
   //
-  // button.on("release", function(button) {
-  //   // console.log( "Pad 13 Pad released" );
-  //   // console.log(button.pin);
-  //   console.log('Pin number ' + button.pin + ' is being released');
-  // });
+  button.on("release", function(button) {
+    // console.log( "Pad 13 Pad released" );
+    // console.log(button.pin);
+    console.log('Pin number ' + button.pin + ' is being released');
+  });
 
   memwatch.on('leak', (info) => {
     console.error('Memory leak detected:\n', info);
@@ -276,6 +324,7 @@ const button = new five.Buttons([
         let buttonId = button.pin;
         // console.log(button.pin);
         client.emit('pushPad', buttonId);
+
       }
     });
     // button.on("release", function(data) {

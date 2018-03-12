@@ -24,7 +24,8 @@ let wrongPad = 0; // Init the counting with a number
         if(correctPad == false) {
 
           // console.log('false');
-          console.log('fail');
+          console.log('fail at top function');
+          // gameSpeed = gameSpeed + 0.05;
           // wrongPad++;
           // console.log('Wrong inputs = ' + wrongPad);
         } else {
@@ -86,6 +87,9 @@ let session = { // For the local storage located under helper functions
   'state': true
 }
 let gameSave = false;
+let gamePadsTemp = [];
+let timeChecker;
+let gameInterval = 3500 / gameSpeed;
 
 // ---
 
@@ -95,34 +99,22 @@ let gameSave = false;
 // -------------------
 /*
 
-Gå ur funktionen ifall dem är correct från början
 
-DONE. Array of current sound, -> Multiple sounds at the same time
-DONE. Dynamic timer with different pads have different timers
-More success sound / More juicy feedback
+Set intervall när det går snabbare, se till att det fungerar, straffa om maskinen går "sönder" med mindre tid
+
+Ta tillbaka maskinen i spel och den går för lång tid
+
+Så att det inte blir samma ljud flera gången om
+
+Escape kanppen - Hur ska vi göra med den? Bygga upp? När det är kritiskt?
+
+
 
 1. Rewrite function for the game to end after several seconds between interactions instead
 2. Keep the seconds between interactons dynamic depending of how well the player are doing?
 3. Add sound support for Feedback if bad/good > Point system to track
 
 
-
-Update song true == cancels the game.
-DONE. One certain pad has a certain timer to stick to
-
-Global timer establishes different levels == Game functions needs to be wrapped in these levels
-
-DONE. Different Feedback sounds depending on pad
-
-DONE. Different sounds depending on pad
-
-
-
-
-
-Test
-LED, connect second board
-Success sound when hitting correct pad
 
 */
 //
@@ -749,6 +741,7 @@ function updateSong(returner) {
   if(returner == true) {
     return;
   } else {
+    console.log('new Song');
 
     // if(soundChecker != null && soundChecker['ifEffect'] == true){ // Check to see if there is any effect on the currently playing sound.
     //     // console.log(soundChecker['ifEffect']);
@@ -786,6 +779,10 @@ function updateSong(returner) {
         console.log('success, the song can be found in the array again');
       }
     }, time);
+    setTimeout(function(){
+      console.log('Pushed ' +  songPlaying + ' to gamePads array');
+      gamePads.push(songPlaying);
+    }, gameInterval + 500);
 
     // socket.emit('LEDfeedback', soundArray[randNum].pin); // Emit to the LEDs the current pad
     // console.log(gamePads[randNum].timer);
@@ -843,12 +840,15 @@ function compareNumber(padPin){
       song.success.stop(); // Stop the song playing
       song.success.play();
       soundChecker = soundChecker.filter(item => item !== song); // Might have to change this OBS
-      gamePads.push(song);
+
+
       amountCorrect++;
       endTimer(song); // End timer and input the new data
       return true; // Return a true value if called upon from elsewhere in document
     } else {
-      //  console.log('wrong');
+      wrongPad++;
+      gameSpeed = gameSpeed + 0.005;
+      console.log('Game speed: ' + gameSpeed);
       return false;
     }
   });
@@ -935,31 +935,152 @@ function resetGlobalTimer() {
   startGlobalTimer();
 }
 
+function introduction(){
+  gameStart.play();
+  intro1.play();
+  setTimeout(function(){
+    intro2.play();
+    console.log('intro2');
+  }, 6000);
+  setTimeout(function(){
+    intro3.play();
+    console.log('intro3');
+  }, 15000);
+  setTimeout(function(){
+    intro4.play();
+    console.log('intro4');
+  }, 6000 + 15000 + 5000);
+  setTimeout(function(){
+    intro5.play();
+    console.log('intro5');
+  }, 6000 + 15000 + 5000 + 5000);
+  setTimeout(function(){
+    intro6.play();
+    console.log('intro6');
+  }, 6000 + 15000 + 5000 + 5000 + 3000);
+  setTimeout(function(){
+    gasGeneral.play();
+    console.log('gasstart');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000);
+  setTimeout(function(){
+    gasGeneral.stop();
+    console.log('gasstop');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 3000);
+  setTimeout(function(){
+    intro7.play();
+    console.log('intro7');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4000);
+  setTimeout(function(){
+    leverGeneral.play();
+    console.log('intro7');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500);
+  setTimeout(function(){
+    leverGeneral.stop();
+    console.log('intro7');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 3000);
+  setTimeout(function(){
+    intro8.play();
+    console.log('intro8');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 4000);
+  setTimeout(function(){
+    bouncyGeneral.play();
+    console.log('bouncyGeneralstart');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000);
+  setTimeout(function(){
+    bouncyGeneral.stop();
+    console.log('bouncyGeneralstop');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000);
+  setTimeout(function(){
+    intro9.play();
+    console.log('intro9');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 1000);
+  setTimeout(function(){
+    electricityGeneral.play();
+    console.log('electricityGeneralstart');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000);
+  setTimeout(function(){
+    electricityGeneral.stop();
+    console.log('electricityGeneralstop');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000);
+  setTimeout(function(){
+    intro10.play();
+    console.log('intro10');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 500);
+  setTimeout(function(){
+    rockstar.play();
+    console.log('pedalstart');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500);
+  setTimeout(function(){
+    rockstar.stop();
+    console.log('pedalstop');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 3000);
+  setTimeout(function(){
+    intro11.play();
+    console.log('intro11');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 3500);
+  setTimeout(function(){
+    padGeneral.play();
+    console.log('padGeneralstart');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 13500);
+  setTimeout(function(){
+    padGeneral.stop();
+    console.log('padGeneralstop');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 13500 + 3000);
+  setTimeout(function(){
+    intro12.play();
+    console.log('intro12');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 13500 + 4000);
+  setTimeout(function(){
+    intro13.play();
+    console.log('intro13');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 13500 + 8000);
+  setTimeout(function(){
+    intro14.play();
+    console.log('intro14');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 13500 + 8000 + 8000);
+  setTimeout(function(){
+    intro15.play();
+    console.log('intro15');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 13500 + 8000 + 10000);
+  setTimeout(function(){
+    startGame();
+    console.log('startGame');
+  }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 13500 + 8000 + 10000 + 3000);
+
+}
+
 
 
 function startGame(name){
-  gameStart.play();
+  gameName = prompt('What is the subjects name?');
   timesDownloaded = 0;
-  gameName = name;
+  // gameName = name;
   arrayInitializer(false);
   startGlobalTimer();
   let arrayChecker = setInterval(function(){
-    if(soundChecker.length > 3){
+    if(soundChecker.length > 4){
       console.log('Ended');
-      endGame(name);
+      endGame(gameName);
       clearInterval(arrayChecker);
     }
   }, 500);
 
 
-  let timeChecker = setInterval(function(){
+  timeChecker = setInterval(function(){
     // console.log('Current sounds: ' + gamePads);
     // console.log('Currently Playing: ' + soundChecker);
     let timer = endGlobalTimer();
     let elapsedTime = Math.round(timer);
     switch (elapsedTime) {
-      case 30:
-        gameSpeed = 1.15;
+      case 10:
+
+        gameSpeed = gameSpeed + 0.15;
+        gameInterval = 3500 / gameSpeed;
+        clearInterval(songUpdater);
+        songUpdater = setInterval(function(){
+          console.log(gameSpeed);
+          updateSong(false);
+        }, 3500 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
       // case 40:
@@ -967,17 +1088,29 @@ function startGame(name){
       //   gameSave = true;
       //   gameReset.play();
       //   break;
-      case 60:
-        gameSpeed = 1.3;
+      case 20:
+        gameSpeed = gameSpeed + 0.15;
+        gameInterval = 3500 / gameSpeed;
+        clearInterval(songUpdater);
+        songUpdater = setInterval(function(){
+          console.log(gameSpeed);
+          updateSong(false);
+        }, 3500 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
       case 90:
-        gameSpeed = 1.5;
+        gameSpeed = gameSpeed + 0.2;
+        gameInterval = 3500 / gameSpeed;
+        clearInterval(songUpdater);
+        songUpdater = setInterval(function(){
+          console.log(gameSpeed);
+          updateSong(false);
+        }, 3500 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
     }
 
-  }, 2000);
+  }, 1000);
 
   // timeInterval = setInterval(function(){
   //   currentTime = endGlobalTimer();
@@ -1013,6 +1146,7 @@ function endGame(name){
   gameStart.stop();
   updateSong(true);
   arrayInitializer(true);
+  clearInterval(timeChecker);
   gameOver.play();
   localStore(name);
   soundChecker.forEach(function(song) {
@@ -1031,7 +1165,7 @@ function localStore(name) {
     var mm = today.getMonth()+1; //January is 0!
     var yyyy = today.getFullYear();
     let globalTimer1 = endGlobalTimer();
-    session.gameRound.push({globalTimer1, name, amountCorrect}); // Push the object to session
+    session.gameRound.push({globalTimer1, name, amountCorrect, wrongPad, gameSpeed}); // Push the object to session
     session.gameRound.push({historyToAnalyze}); // Push the object to session
     let sessionJSON = JSON.stringify(session, null, "\t");
     if(timesDownloaded == 0){
