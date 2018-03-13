@@ -180,280 +180,10 @@ var gameReset = new Pizzicato.Sound({
 
 // Each sound should be created as a object like this. Just change the var name and source and you should be good to go. Don't forget to add the var name to the two arrays below called "group" and "soundArray".
 
-// $( document ).ready(function() {
-//   var leverGeneral = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../leverSounds/leverGeneral.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var leverSuccess = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../leverSounds/leverSuccess.mp3',
-//       loop: false
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var leverFail = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../leverSounds/leverFail.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var electricityGeneral = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../electricity/electricityGeneral.wav',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var electricitySuccess = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../electricity/electricitySuccess.wav',
-//       loop: false
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var electricityFail = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../electricity/electricityFailure.wav',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var gasGeneral = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../gasleak/gasleakGeneral.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var gasSuccess = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../gasleak/gasleakSuccess.mp3',
-//       loop: false
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var gasFail = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../gasleak/gasleakFailure.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//
-//   var bouncyGeneral = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../saw/sawGeneral.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var bouncySuccess = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../saw/sawSuccess.mp3',
-//       loop: false
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var bouncyFail = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../saw/sawFailure.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var padGeneral = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../gamesounds/alarmSiren.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var padSuccess = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../machineSound1/machineSuccess.mp3',
-//       loop: false
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var padFail = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../machineSound1/machineFailure.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//
-//
-//   var accordion = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../sadaccordion.mp3',
-//       loop: true,
-//       attack: 0.9,
-//       volume: 0.7
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var torture = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../phased_torture.wav',
-//       loop: true,
-//       attack: 0.9,
-//       volume: 0.7
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var central = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../central.mp3',
-//       loop: true,
-//       attack: 0.9,
-//       volume: 0.7
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var rockstar = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../rockstar.wav',
-//       loop: true,
-//       attack: 0.9,
-//       volume: 0.7
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var candy = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../candy.mp3',
-//       loop: false,
-//       attack: 0.9,
-//       volume: 0.4
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var successSound = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../success1.mp3',
-//       loop: false
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var gameOver = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../gamesounds/explosionGameOver.mp3',
-//       loop: false
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var gameStart = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../gamesounds/factoryBackground.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//   var gameReset = new Pizzicato.Sound({
-//     source: 'file',
-//     options: {
-//       path: '../gamesounds/alarmSiren.mp3',
-//       loop: true
-//     }, function() {
-//     // accordion.play();
-//     }
-//   });
-//
-//   // let leverArray = {
-//   //   pin: 13,
-//   //   timer: 6000 / gameSpeed,
-//   //   failure: leverFail,
-//   //   success: leverSuccess,
-//   //   general: leverGeneral,
-//   //   canBeActivated: true
-//   // };
-//   // let bouncyPadArray = {
-//   //   pin: 9,
-//   //   timer: 4500 / gameSpeed,
-//   //   failure: rockstar,
-//   //   success: candy,
-//   //   general: central,
-//   //   canBeActivated: true
-//   // };
-//   // let wiresArray = {
-//   //   pin: 11,
-//   //   timer: 6000 / gameSpeed,
-//   //   failure: electricityFail,
-//   //   success: electricitySuccess,
-//   //   general: electricityGeneral,
-//   //   canBeFailed: true
-//   // };
-//   // let valveArray = {
-//   //   pin: 12,
-//   //   timer: 6000 / gameSpeed,
-//   //   failure: gasFail,
-//   //   success: gasSuccess,
-//   //   general: gasGeneral,
-//   //   canBeFailed: true
-//   // };
-//   // let padArray = {
-//   //   pin: 10,
-//   //   timer: 4500 / gameSpeed,
-//   //   failure: padFail,
-//   //   success: padSuccess,
-//   //   general: padGeneral,
-//   //   canBeFailed: true
-//   // };
-//
-//     console.log( "ready!" );
-// });
+$( document ).ready(function() {
+    minimunWage.play();
+    console.log( "ready!" );
+});
 
 var accordion = new Pizzicato.Sound({
   source: 'file',
@@ -679,6 +409,15 @@ var systemNormal = new Pizzicato.Sound({
   options: {
     path: '../gamesounds/allsystemsnormal.mp3',
     loop: false
+  }, function() {
+  // accordion.play();
+  }
+});
+var minimunWage = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../gamesounds/minimumWage.mp3',
+    loop: true
   }, function() {
   // accordion.play();
   }
@@ -1351,13 +1090,17 @@ function clearLocalStorage(){
 // ---
 
 function startGameInit(){
+  minimunWage.stop();
   gameName = $('#input').val();
+  console.log(gameName);
   switchToScreen('gamescreen');
   startGame();
 }
 
 function startIntroduction() {
+  minimunWage.stop();
   gameName = $('#input').val();
+  console.log(gameName);
   switchToScreen('gamescreen');
   introduction();
 }
@@ -1366,6 +1109,7 @@ function switchToScreen(screen){
   switch (screen) {
     case 'gamescreen':
       var firstScreen = document.querySelectorAll('.firstScreen');
+      var secondScreen = document.querySelectorAll('.secondScreen');
       anime({
         targets: firstScreen,
         translateX: 1000,
@@ -1373,14 +1117,14 @@ function switchToScreen(screen){
         });
         setTimeout(function(){
           $('.firstScreen').remove();
+          secondScreen.show();
         }, 300);
-      var secondScreen = document.querySelectorAll('.secondScreen');
-      secondScreen.show();
       anime({
         targets: secondScreen,
         opacity: 100
         translateX: [300, 0],
-        duration: 500
+        duration: 500,
+        delay: 300
         });
       break;
   }
