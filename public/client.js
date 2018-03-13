@@ -902,6 +902,7 @@ function compareNumber(padPin){
       song.success.play();
       soundChecker = soundChecker.filter(item => item !== song); // Might have to change this OBS
       amountCorrect++;
+      $('#score').text(amountCorrect);
       if(amountCorrect > 2 && amountCorrect % 3 == 0) {
         let randomNumberPositive = Math.floor(Math.random() * PositiveFeedback.length) + 0;
         setTimeout(function(){
@@ -1126,12 +1127,19 @@ function introduction(){
 
 function startGame(name){
   gameStart.play();
-  gameName = prompt('What is the subjects name?');
+  $('#playerNameDynamic').text(gameName);
+  // gameName = prompt('What is the subjects name?');
   timesDownloaded = 0;
   // gameName = name;
   arrayInitializer(false);
   startGlobalTimer();
   let arrayChecker = setInterval(function(){
+    $('statusMessage').text('OK');
+    $('statusMessage').css('background-color', 'green');
+    if(soundChecker.length > 2) {
+      $('statusMessage').text('CRITICAL');
+      $('statusMessage').css('background-color', 'red');
+    }
     if(soundChecker.length > 3){
       console.log('Ended');
       endGame(gameName);
@@ -1149,6 +1157,7 @@ function startGame(name){
     // console.log('Currently Playing: ' + soundChecker);
     let timer = endGlobalTimer();
     let elapsedTime = Math.round(timer);
+    $('#timeDynamic').text(elapsedTime);
     switch (elapsedTime) {
       case 20:
         feedbackNegative11.play();
@@ -1340,3 +1349,39 @@ function clearLocalStorage(){
 }
 
 // ---
+
+function startGameInit(){
+  gameName = $('#input').val();
+  switchToScreen('gamescreen');
+  startGame();
+}
+
+function startIntroduction() {
+  gameName = $('#input').val();
+  switchToScreen('gamescreen');
+  introduction();
+}
+
+function switchToScreen(screen){
+  switch (screen) {
+    case 'gamescreen':
+      var firstScreen = document.querySelectorAll('.firstScreen');
+      anime({
+        targets: firstScreen,
+        translateX: 1000,
+        duration: 300
+        });
+        setTimeout(function(){
+          $('.firstScreen').remove();
+        }, 300);
+      var secondScreen = document.querySelectorAll('.secondScreen');
+      secondScreen.show();
+      anime({
+        targets: secondScreen,
+        opacity: 100
+        translateX: [300, 0],
+        duration: 500
+        });
+      break;
+  }
+}
