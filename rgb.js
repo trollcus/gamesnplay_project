@@ -90,6 +90,12 @@ const button = new five.Buttons([
       pin: 9,
       isPullup: true,
       holdtime: 5000
+    },
+    {
+      // board: this.byId("MEGA"),
+      pin: 3,
+      isPullup: true,
+      holdtime: 5000
     }
   ]);
 
@@ -208,19 +214,19 @@ const button = new five.Buttons([
   //   // console.log( "Pad 13 Standing on plate" );
   // });
   //
-  button.on("press", function(button) {
-    // console.log( "Pad 13 Pad pushed" );
-    // console.log(button.pin);
-    console.log('Pin number ' + button.pin + ' is being pressed');
-
-    // console.log(button);
-  });
+  // button.on("press", function(button) {
+  //   // console.log( "Pad 13 Pad pushed" );
+  //   // console.log(button.pin);
+  //   console.log('Pin number ' + button.pin + ' is being pressed');
   //
-  button.on("release", function(button) {
-    // console.log( "Pad 13 Pad released" );
-    // console.log(button.pin);
-    console.log('Pin number ' + button.pin + ' is being released');
-  });
+  //   // console.log(button);
+  // });
+  //
+  // button.on("release", function(button) {
+  //   // console.log( "Pad 13 Pad released" );
+  //   // console.log(button.pin);
+  //   console.log('Pin number ' + button.pin + ' is being released');
+  // });
 
   memwatch.on('leak', (info) => {
     console.error('Memory leak detected:\n', info);

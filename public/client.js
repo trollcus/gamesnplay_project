@@ -24,14 +24,14 @@ let wrongPad = 0; // Init the counting with a number
         if(correctPad == false) {
 
           // console.log('false');
-          console.log('fail at top function');
+          // console.log('fail at top function');
           // gameSpeed = gameSpeed + 0.05;
           // wrongPad++;
           // console.log('Wrong inputs = ' + wrongPad);
         } else {
           // Emit pin to turn on LED, event name is LEDCorrectfeedback which can be handled on the rgb.js side. Button is the pin number and should be directed to its LED lights.
           // socket.emit('LEDCorrectfeedback', button);
-          console.log('correct');
+          // console.log('correct');
 
           // successSound.play();
         }
@@ -89,7 +89,10 @@ let session = { // For the local storage located under helper functions
 let gameSave = false;
 let gamePadsTemp = [];
 let timeChecker;
-let gameInterval = 3500 / gameSpeed;
+let gameInterval = 4000 / gameSpeed;
+let failingSong;
+let successSong;
+let pushSong;
 
 // ---
 
@@ -177,280 +180,280 @@ var gameReset = new Pizzicato.Sound({
 
 // Each sound should be created as a object like this. Just change the var name and source and you should be good to go. Don't forget to add the var name to the two arrays below called "group" and "soundArray".
 
-$( document ).ready(function() {
-  var leverGeneral = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../leverSounds/leverGeneral.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var leverSuccess = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../leverSounds/leverSuccess.mp3',
-      loop: false
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var leverFail = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../leverSounds/leverFail.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var electricityGeneral = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../electricity/electricityGeneral.wav',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var electricitySuccess = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../electricity/electricitySuccess.wav',
-      loop: false
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var electricityFail = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../electricity/electricityFailure.wav',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var gasGeneral = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../gasleak/gasleakGeneral.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var gasSuccess = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../gasleak/gasleakSuccess.mp3',
-      loop: false
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var gasFail = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../gasleak/gasleakFailure.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-
-  var bouncyGeneral = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../saw/sawGeneral.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var bouncySuccess = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../saw/sawSuccess.mp3',
-      loop: false
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var bouncyFail = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../saw/sawFailure.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var padGeneral = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../gamesounds/alarmSiren.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var padSuccess = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../machineSound1/machineSuccess.mp3',
-      loop: false
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var padFail = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../machineSound1/machineFailure.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-
-
-  var accordion = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../sadaccordion.mp3',
-      loop: true,
-      attack: 0.9,
-      volume: 0.7
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var torture = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../phased_torture.wav',
-      loop: true,
-      attack: 0.9,
-      volume: 0.7
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var central = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../central.mp3',
-      loop: true,
-      attack: 0.9,
-      volume: 0.7
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var rockstar = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../rockstar.wav',
-      loop: true,
-      attack: 0.9,
-      volume: 0.7
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var candy = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../candy.mp3',
-      loop: false,
-      attack: 0.9,
-      volume: 0.4
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var successSound = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../success1.mp3',
-      loop: false
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var gameOver = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../gamesounds/explosionGameOver.mp3',
-      loop: false
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var gameStart = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../gamesounds/factoryBackground.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-  var gameReset = new Pizzicato.Sound({
-    source: 'file',
-    options: {
-      path: '../gamesounds/alarmSiren.mp3',
-      loop: true
-    }, function() {
-    // accordion.play();
-    }
-  });
-
-  // let leverArray = {
-  //   pin: 13,
-  //   timer: 6000 / gameSpeed,
-  //   failure: leverFail,
-  //   success: leverSuccess,
-  //   general: leverGeneral,
-  //   canBeActivated: true
-  // };
-  // let bouncyPadArray = {
-  //   pin: 9,
-  //   timer: 4500 / gameSpeed,
-  //   failure: rockstar,
-  //   success: candy,
-  //   general: central,
-  //   canBeActivated: true
-  // };
-  // let wiresArray = {
-  //   pin: 11,
-  //   timer: 6000 / gameSpeed,
-  //   failure: electricityFail,
-  //   success: electricitySuccess,
-  //   general: electricityGeneral,
-  //   canBeFailed: true
-  // };
-  // let valveArray = {
-  //   pin: 12,
-  //   timer: 6000 / gameSpeed,
-  //   failure: gasFail,
-  //   success: gasSuccess,
-  //   general: gasGeneral,
-  //   canBeFailed: true
-  // };
-  // let padArray = {
-  //   pin: 10,
-  //   timer: 4500 / gameSpeed,
-  //   failure: padFail,
-  //   success: padSuccess,
-  //   general: padGeneral,
-  //   canBeFailed: true
-  // };
-
-    console.log( "ready!" );
-});
+// $( document ).ready(function() {
+//   var leverGeneral = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../leverSounds/leverGeneral.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var leverSuccess = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../leverSounds/leverSuccess.mp3',
+//       loop: false
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var leverFail = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../leverSounds/leverFail.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var electricityGeneral = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../electricity/electricityGeneral.wav',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var electricitySuccess = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../electricity/electricitySuccess.wav',
+//       loop: false
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var electricityFail = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../electricity/electricityFailure.wav',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var gasGeneral = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../gasleak/gasleakGeneral.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var gasSuccess = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../gasleak/gasleakSuccess.mp3',
+//       loop: false
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var gasFail = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../gasleak/gasleakFailure.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//
+//   var bouncyGeneral = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../saw/sawGeneral.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var bouncySuccess = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../saw/sawSuccess.mp3',
+//       loop: false
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var bouncyFail = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../saw/sawFailure.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var padGeneral = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../gamesounds/alarmSiren.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var padSuccess = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../machineSound1/machineSuccess.mp3',
+//       loop: false
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var padFail = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../machineSound1/machineFailure.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//
+//
+//   var accordion = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../sadaccordion.mp3',
+//       loop: true,
+//       attack: 0.9,
+//       volume: 0.7
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var torture = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../phased_torture.wav',
+//       loop: true,
+//       attack: 0.9,
+//       volume: 0.7
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var central = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../central.mp3',
+//       loop: true,
+//       attack: 0.9,
+//       volume: 0.7
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var rockstar = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../rockstar.wav',
+//       loop: true,
+//       attack: 0.9,
+//       volume: 0.7
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var candy = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../candy.mp3',
+//       loop: false,
+//       attack: 0.9,
+//       volume: 0.4
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var successSound = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../success1.mp3',
+//       loop: false
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var gameOver = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../gamesounds/explosionGameOver.mp3',
+//       loop: false
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var gameStart = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../gamesounds/factoryBackground.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//   var gameReset = new Pizzicato.Sound({
+//     source: 'file',
+//     options: {
+//       path: '../gamesounds/alarmSiren.mp3',
+//       loop: true
+//     }, function() {
+//     // accordion.play();
+//     }
+//   });
+//
+//   // let leverArray = {
+//   //   pin: 13,
+//   //   timer: 6000 / gameSpeed,
+//   //   failure: leverFail,
+//   //   success: leverSuccess,
+//   //   general: leverGeneral,
+//   //   canBeActivated: true
+//   // };
+//   // let bouncyPadArray = {
+//   //   pin: 9,
+//   //   timer: 4500 / gameSpeed,
+//   //   failure: rockstar,
+//   //   success: candy,
+//   //   general: central,
+//   //   canBeActivated: true
+//   // };
+//   // let wiresArray = {
+//   //   pin: 11,
+//   //   timer: 6000 / gameSpeed,
+//   //   failure: electricityFail,
+//   //   success: electricitySuccess,
+//   //   general: electricityGeneral,
+//   //   canBeFailed: true
+//   // };
+//   // let valveArray = {
+//   //   pin: 12,
+//   //   timer: 6000 / gameSpeed,
+//   //   failure: gasFail,
+//   //   success: gasSuccess,
+//   //   general: gasGeneral,
+//   //   canBeFailed: true
+//   // };
+//   // let padArray = {
+//   //   pin: 10,
+//   //   timer: 4500 / gameSpeed,
+//   //   failure: padFail,
+//   //   success: padSuccess,
+//   //   general: padGeneral,
+//   //   canBeFailed: true
+//   // };
+//
+//     console.log( "ready!" );
+// });
 
 var accordion = new Pizzicato.Sound({
   source: 'file',
@@ -519,7 +522,7 @@ var leverFail = new Pizzicato.Sound({
   source: 'file',
   options: {
     path: '../leverSounds/leverFail.mp3',
-    loop: true
+    loop: false
   }, function() {
   // accordion.play();
   }
@@ -546,7 +549,7 @@ var electricityFail = new Pizzicato.Sound({
   source: 'file',
   options: {
     path: '../electricity/electricityFailure.wav',
-    loop: true
+    loop: false
   }, function() {
   // accordion.play();
   }
@@ -573,7 +576,7 @@ var gasFail = new Pizzicato.Sound({
   source: 'file',
   options: {
     path: '../gasleak/gasleakFailure.mp3',
-    loop: true
+    loop: false
   }, function() {
   // accordion.play();
   }
@@ -601,7 +604,7 @@ var bouncyFail = new Pizzicato.Sound({
   source: 'file',
   options: {
     path: '../saw/sawFailure.mp3',
-    loop: true
+    loop: false
   }, function() {
   // accordion.play();
   }
@@ -628,7 +631,54 @@ var padFail = new Pizzicato.Sound({
   source: 'file',
   options: {
     path: '../machineSound1/machineFailure.mp3',
+    loop: false
+  }, function() {
+  // accordion.play();
+  }
+});
+var pedalGeneral = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../pedalSound/pedalGeneral.wav',
     loop: true
+  }, function() {
+  // accordion.play();
+  }
+});
+var pedalSuccess = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../pedalSound/pedalSuccess.mp3',
+    loop: false
+  }, function() {
+  // accordion.play();
+  }
+});
+var pedalFail = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../pedalSound/pedalFail.wav',
+    loop: false
+  }, function() {
+  // accordion.play();
+  }
+});
+
+
+var AllFeedback = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../juicyFeedback/juicySucess12.mp3',
+    loop: false
+  }, function() {
+  // accordion.play();
+  }
+});
+var systemNormal = new Pizzicato.Sound({
+  source: 'file',
+  options: {
+    path: '../gamesounds/allsystemsnormal.mp3',
+    loop: false
   }, function() {
   // accordion.play();
   }
@@ -642,41 +692,49 @@ let juicyFeedback = [];
 // let leverPad = new Pizzicato.Group([accordion, torture, central]); // If we decide to add support for multiple sounds playing at once arrays like this can come in handy when controlling specific groups of sounds.
 let leverArray = {
   pin: 13,
-  timer: 8000 / gameSpeed,
+  timer: 12000 / gameSpeed,
   failure: leverFail,
-  success: leverSuccess,
+  success: AllFeedback,
   general: leverGeneral,
   canBeFailed: true
 };
 let bouncyPadArray = {
   pin: 9,
-  timer: 8000 / gameSpeed,
+  timer: 12000 / gameSpeed,
   failure: bouncyFail,
-  success: bouncySuccess,
+  success: AllFeedback,
   general: bouncyGeneral,
   canBeFailed: true
 };
 let wiresArray = {
   pin: 10,
-  timer: 8000 / gameSpeed,
+  timer: 12000 / gameSpeed,
   failure: electricityFail,
-  success: electricitySuccess,
+  success: AllFeedback,
   general: electricityGeneral,
   canBeFailed: true
 };
 let valveArray = {
   pin: 12,
-  timer: 8000 / gameSpeed,
+  timer: 12000 / gameSpeed,
   failure: gasFail,
-  success: gasSuccess,
+  success: AllFeedback,
   general: gasGeneral,
   canBeFailed: true
 };
-let padArray = {
+let pedalArray = {
   pin: 11,
-  timer: 8000 / gameSpeed,
+  timer: 12000 / gameSpeed,
+  failure: pedalFail,
+  success: AllFeedback,
+  general: pedalGeneral,
+  canBeFailed: true
+};
+let padArray = {
+  pin: 3,
+  timer: 12000 / gameSpeed,
   failure: padFail,
-  success: padSuccess,
+  success: AllFeedback,
   general: padGeneral,
   canBeFailed: true
 };
@@ -697,9 +755,9 @@ let padArray = {
 // };
 
 
-let group = new Pizzicato.Group([accordion, torture, central, rockstar, candy, leverFail, leverSuccess, leverGeneral, electricityFail, electricitySuccess, electricityGeneral, gasFail, gasSuccess, gasGeneral, bouncyFail, bouncySuccess, bouncyGeneral, padFail, padSuccess, padGeneral]); // Add sounds to this group in order to control and to the array below in order to store additional values
+let group = new Pizzicato.Group([accordion, torture, central, rockstar, candy, leverFail, leverSuccess, leverGeneral, electricityFail, electricitySuccess, electricityGeneral, gasFail, gasSuccess, gasGeneral, bouncyFail, bouncySuccess, bouncyGeneral, padFail, padSuccess, padGeneral, pedalFail, pedalSuccess, pedalGeneral, AllFeedback]); // Add sounds to this group in order to control and to the array below in order to store additional values
 let soundArray = [accordion, torture, central, rockstar, candy];
-let gamePads = [leverArray, wiresArray, valveArray, padArray, bouncyPadArray];
+let gamePads = [leverArray, wiresArray, valveArray, pedalArray, bouncyPadArray];
 let songUpdater;
 
 // arrayInitializer() is the one that starts the process/game. This should be executed when wanting to play/test the game, if not initialized in a document.ready function it can be written in the web console.
@@ -713,9 +771,9 @@ function arrayInitializer(returner) {
   } else {
 
     songUpdater = setInterval(function(){
-      console.log(gameSpeed);
+      // console.log(gameSpeed);
       updateSong(false);
-    }, 3500 / gameSpeed);
+    }, 4000 / gameSpeed);
 
     // shuffle(soundArray); // Shuffles the array using helper function which can be located at the bottom of this doc
     // let numb = 13; // Start the variable with the PIN on the arduino board. Always start on 13 and downwards
@@ -741,7 +799,7 @@ function updateSong(returner) {
   if(returner == true) {
     return;
   } else {
-    console.log('new Song');
+    // console.log('new Song');
 
     // if(soundChecker != null && soundChecker['ifEffect'] == true){ // Check to see if there is any effect on the currently playing sound.
     //     // console.log(soundChecker['ifEffect']);
@@ -754,6 +812,7 @@ function updateSong(returner) {
     if(gamePads.length == 0) {
       endGame(gameName);
     }
+      console.log('Game is running at speed ' + gameSpeed + 'X');
     console.log(gamePads[randNum]);
     gamePads[randNum].general.play(); // Plays random song within the array of sounds
     gamePads[randNum].canBeFailed = true; // Plays random song within the array of sounds
@@ -764,7 +823,7 @@ function updateSong(returner) {
     // let itemSong = gamePads[randNum];
     // console.log(gamePads);
     gamePads = gamePads.filter(item => item !== gamePads[randNum]); // Might have to change this OBS
-    setTimeout(function(){
+    failingSong = setTimeout(function(){
       if(songPlaying.canBeFailed == true) {
         songPlaying.general.stop();
         songPlaying.failure.play();
@@ -772,14 +831,14 @@ function updateSong(returner) {
         console.log(songPlaying.canBeFailed);
       }
     }, time - 1500);
-    setTimeout(function(){
+    successSong = setTimeout(function(){
       if(gamePads.indexOf(songPlaying) == -1) {
         songPlaying.failure.stop();
       } else {
         console.log('success, the song can be found in the array again');
       }
     }, time);
-    setTimeout(function(){
+    pushSong = setTimeout(function(){
       console.log('Pushed ' +  songPlaying + ' to gamePads array');
       gamePads.push(songPlaying);
     }, gameInterval + 500);
@@ -791,6 +850,7 @@ function updateSong(returner) {
 
 
 }
+
 
 
 
@@ -835,20 +895,33 @@ function compareNumber(padPin){
     if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
       color();
       song.canBeFailed = false;
+      clearTimeout(failingSong);
       song.general.stop(); // Stop the song playing
       song.failure.stop(); // Stop the song playing
       song.success.stop(); // Stop the song playing
       song.success.play();
       soundChecker = soundChecker.filter(item => item !== song); // Might have to change this OBS
-
-
       amountCorrect++;
+      if(amountCorrect > 2 && amountCorrect % 3 == 0) {
+        let randomNumberPositive = Math.floor(Math.random() * PositiveFeedback.length) + 0;
+        setTimeout(function(){
+          PositiveFeedback[randomNumberPositive].play();
+        }, 1000);
+
+      }
+
       endTimer(song); // End timer and input the new data
       return true; // Return a true value if called upon from elsewhere in document
     } else {
       wrongPad++;
-      gameSpeed = gameSpeed + 0.005;
-      console.log('Game speed: ' + gameSpeed);
+      if(wrongPad > 2 && wrongPad % 3 == 0) {
+        let randomNumberNegative = Math.floor(Math.random() * NegativeFeedback.length) + 0;
+        setTimeout(function(){
+          NegativeFeedback[randomNumberNegative].play();
+        }, 500);
+      }
+      gameSpeed = gameSpeed + 0.015;
+      // console.log('Game speed: ' + gameSpeed);
       return false;
     }
   });
@@ -1007,11 +1080,11 @@ function introduction(){
     console.log('intro10');
   }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 500);
   setTimeout(function(){
-    rockstar.play();
+    pedalGeneral.play();
     console.log('pedalstart');
   }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500);
   setTimeout(function(){
-    rockstar.stop();
+    pedalGeneral.stop();
     console.log('pedalstop');
   }, 6000 + 15000 + 5000 + 5000 + 3000 + 1000 + 4500 + 5000 + 3000 + 2000 + 3000 + 1500 + 3000);
   setTimeout(function(){
@@ -1052,60 +1125,102 @@ function introduction(){
 
 
 function startGame(name){
+  gameStart.play();
   gameName = prompt('What is the subjects name?');
   timesDownloaded = 0;
   // gameName = name;
   arrayInitializer(false);
   startGlobalTimer();
   let arrayChecker = setInterval(function(){
-    if(soundChecker.length > 4){
+    if(soundChecker.length > 3){
       console.log('Ended');
       endGame(gameName);
       clearInterval(arrayChecker);
     }
   }, 500);
+  let timeStamp = Math.round(endGlobalTimer());
+  let alarmPad = Math.floor(Math.random() * (timeStamp + 45)) + (timeStamp + 20);
+  console.log(alarmPad);
 
 
   timeChecker = setInterval(function(){
+    // console.log('The alarm is going of at: ' + alarmPad);
     // console.log('Current sounds: ' + gamePads);
     // console.log('Currently Playing: ' + soundChecker);
     let timer = endGlobalTimer();
     let elapsedTime = Math.round(timer);
     switch (elapsedTime) {
-      case 10:
-
+      case 20:
+        feedbackNegative11.play();
         gameSpeed = gameSpeed + 0.15;
-        gameInterval = 3500 / gameSpeed;
+        gameInterval = 4000 / gameSpeed;
         clearInterval(songUpdater);
         songUpdater = setInterval(function(){
           console.log(gameSpeed);
           updateSong(false);
-        }, 3500 / gameSpeed);
+        }, 4000 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
-      // case 40:
-      //   gameChanger();
-      //   gameSave = true;
-      //   gameReset.play();
-      //   break;
-      case 20:
+      case alarmPad:
+        timeStamp = Math.round(endGlobalTimer());
+        alarmPad = Math.floor(Math.random() * (timeStamp + 55)) + (timeStamp + 25);
+        gameChanger();
+        gameSave = true;
+        gameReset.play();
+        break;
+      case 50:
+        feedbackNegative11.play();
         gameSpeed = gameSpeed + 0.15;
-        gameInterval = 3500 / gameSpeed;
+        gameInterval = 4000 / gameSpeed;
         clearInterval(songUpdater);
         songUpdater = setInterval(function(){
           console.log(gameSpeed);
           updateSong(false);
-        }, 3500 / gameSpeed);
+        }, 4000 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
       case 90:
+        feedbackNegative11.play();
         gameSpeed = gameSpeed + 0.2;
-        gameInterval = 3500 / gameSpeed;
+        gameInterval = 4000 / gameSpeed;
         clearInterval(songUpdater);
         songUpdater = setInterval(function(){
           console.log(gameSpeed);
           updateSong(false);
-        }, 3500 / gameSpeed);
+        }, 4000 / gameSpeed);
+        console.log('Game is running at speed ' + gameSpeed + 'X');
+        break;
+      case 120:
+        feedbackNegative11.play();
+        gameSpeed = gameSpeed + 0.25;
+        gameInterval = 4000 / gameSpeed;
+        clearInterval(songUpdater);
+        songUpdater = setInterval(function(){
+          console.log(gameSpeed);
+          updateSong(false);
+        }, 4000 / gameSpeed);
+        console.log('Game is running at speed ' + gameSpeed + 'X');
+        break;
+      case 150:
+        feedbackNegative11.play();
+        gameSpeed = gameSpeed + 0.2;
+        gameInterval = 4000 / gameSpeed;
+        clearInterval(songUpdater);
+        songUpdater = setInterval(function(){
+          console.log(gameSpeed);
+          updateSong(false);
+        }, 4000 / gameSpeed);
+        console.log('Game is running at speed ' + gameSpeed + 'X');
+        break;
+      case 180:
+        feedbackNegative11.play();
+        gameSpeed = gameSpeed + 0.2;
+        gameInterval = 4000 / gameSpeed;
+        clearInterval(songUpdater);
+        songUpdater = setInterval(function(){
+          console.log(gameSpeed);
+          updateSong(false);
+        }, 4000 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
     }
@@ -1130,12 +1245,39 @@ function gameChanger(state){
   if(gameSave == true) {
     setTimeout(function(){
       gameSave = false;
-    }, 7000 / gameSpeed);
+    }, 12000 / gameSpeed);
     // If you make it it will reset the game
     gameReset.stop();
     group.stop();
+    clearTimeout(failingSong);
+    clearTimeout(successSong);
+    clearTimeout(pushSong);
     soundChecker = [];
-    gamePads = [leverArray, wiresArray, valveArray, padArray];
+    gamePads = [leverArray, wiresArray, valveArray, padArray, bouncyPadArray];
+    systemNormal.play();
+    for(var i = 0; i < gamePads.length; i++){
+      gamePads[i].canBeFailed = true;
+      // console.log('Number: ' + gamePads[i] + ' canBeFailed is set to true');
+    }
+    clearInterval(songUpdater);
+    gameSpeed = gameSpeed - 0.22;
+    setTimeout(function(){
+      group.stop();
+      soundChecker = [];
+      gamePads = [leverArray, wiresArray, valveArray, padArray, bouncyPadArray];
+      for(var i = 0; i < gamePads.length; i++){
+        gamePads[i].canBeFailed = true;
+        console.log('Number: ' + gamePads[i] + ' canBeFailed is set to true');
+      }
+      clearTimeout(failingSong);
+      clearTimeout(successSong);
+      clearTimeout(pushSong);
+      console.log('stop all the sounds');
+    }, 4000 / gameSpeed);
+    songUpdater = setInterval(function(){
+      console.log(gameSpeed);
+      updateSong(false);
+    }, 4000 / gameSpeed);
   } else {
     return;
   }
