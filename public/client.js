@@ -127,7 +127,19 @@ Escape kanppen - Hur ska vi göra med den? Bygga upp? När det är kritiskt?
 // Each sound should be created as a object like this. Just change the var name and source and you should be good to go. Don't forget to add the var name to the two arrays below called "group" and "soundArray".
 
 $( document ).ready(function() {
-    minimunWage.play();
+  // var minimunWage = new Pizzicato.Sound({
+  //   source: 'file',
+  //   options: {
+  //     path: '../gamesounds/minimumWage.mp3',
+  //     loop: true
+  //   }, function() {
+  //   // accordion.play();
+  //   }
+  // });
+    setTimeout(function(){
+      gameStart.play();
+    }, 1500);
+
     console.log( "ready!" );
 });
 
@@ -349,7 +361,7 @@ function compareNumber(padPin){
       song.success.play();
       soundChecker = soundChecker.filter(item => item !== song); // Might have to change this OBS
       amountCorrect++;
-      $('#score').text(amountCorrect);
+      $('#Bigscore').text(amountCorrect);
       if(amountCorrect > 2 && amountCorrect % 3 == 0) {
         let randomNumberPositive = Math.floor(Math.random() * PositiveFeedback.length) + 0;
         setTimeout(function(){
@@ -573,7 +585,6 @@ function introduction(){
 
 
 function startGame(name){
-  gameStart.play();
   $('#playerNameDynamic').text(gameName);
   // gameName = prompt('What is the subjects name?');
   timesDownloaded = 0;
@@ -581,11 +592,11 @@ function startGame(name){
   arrayInitializer(false);
   startGlobalTimer();
   let arrayChecker = setInterval(function(){
-    $('statusMessage').text('OK');
-    $('statusMessage').css('background-color', 'green');
+    $('#statusMessage').text('OK');
+    $('#statusMessage').css('background-color', 'green');
     if(soundChecker.length > 2) {
-      $('statusMessage').text('CRITICAL');
-      $('statusMessage').css('background-color', 'red');
+      $('#statusMessage').text('CRITICAL');
+      $('#statusMessage').css('background-color', 'red');
     }
     if(soundChecker.length > 3){
       console.log('Ended');
@@ -646,7 +657,7 @@ function startGame(name){
         }, 4000 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
-      case 120:
+      case 140:
         feedbackNegative11.play();
         gameSpeed = gameSpeed + 0.25;
         gameInterval = 4000 / gameSpeed;
@@ -657,7 +668,7 @@ function startGame(name){
         }, 4000 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
-      case 150:
+      case 180:
         feedbackNegative11.play();
         gameSpeed = gameSpeed + 0.2;
         gameInterval = 4000 / gameSpeed;
@@ -668,7 +679,7 @@ function startGame(name){
         }, 4000 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
-      case 180:
+      case 210:
         feedbackNegative11.play();
         gameSpeed = gameSpeed + 0.2;
         gameInterval = 4000 / gameSpeed;
@@ -697,11 +708,14 @@ function startGame(name){
 
 function gameChanger(state){
 
-
   if(gameSave == true) {
+    systemNormal.play();
     setTimeout(function(){
       gameSave = false;
     }, 12000 / gameSpeed);
+    setTimeout(function(){
+      systemNormal.stop();
+    }, 3000);
     // If you make it it will reset the game
     gameReset.stop();
     group.stop();
@@ -710,7 +724,7 @@ function gameChanger(state){
     clearTimeout(pushSong);
     soundChecker = [];
     gamePads = [leverArray, wiresArray, valveArray, padArray, bouncyPadArray];
-    systemNormal.play();
+
     for(var i = 0; i < gamePads.length; i++){
       gamePads[i].canBeFailed = true;
       // console.log('Number: ' + gamePads[i] + ' canBeFailed is set to true');
@@ -741,12 +755,14 @@ function gameChanger(state){
 
 
 function endGame(name){
+  switchToScreen('endscreen');
   gameStart.stop();
   updateSong(true);
   arrayInitializer(true);
   clearInterval(timeChecker);
   gameOver.play();
   localStore(name);
+  minimunWage.play();
   soundChecker.forEach(function(song) {
     song.canBeFailed = false;
 
@@ -756,13 +772,13 @@ function endGame(name){
 
 
 // Use localstorage for the games for window
-
+let globalTimer1;
 function localStore(name) {
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
     var yyyy = today.getFullYear();
-    let globalTimer1 = endGlobalTimer();
+    globalTimer1 = endGlobalTimer();
     session.gameRound.push({globalTimer1, name, amountCorrect, wrongPad, gameSpeed}); // Push the object to session
     session.gameRound.push({historyToAnalyze}); // Push the object to session
     let sessionJSON = JSON.stringify(session, null, "\t");
@@ -821,19 +837,101 @@ function switchToScreen(screen){
       anime({
         targets: firstScreen,
         translateX: 1000,
-        duration: 300
+        opacity: 0,
+        duration: 500,
+        easing: 'easeInOutQuad'
         });
         setTimeout(function(){
           $('.firstScreen').remove();
-          secondScreen.show();
+          $(secondScreen).show();
+          $('.displayTop').css('display', 'flex');
         }, 300);
       anime({
         targets: secondScreen,
-        opacity: 100
+        opacity: 100,
+        // translateX: 300,
         translateX: [300, 0],
-        duration: 500,
-        delay: 300
+        duration: 800,
+        delay: 500
+
         });
+
+
+      break;
+    case 'endscreen':
+
+      var secondScreen = document.querySelectorAll('.secondScreen');
+      $(secondScreen).hide();
+      var thirdScreen = document.querySelectorAll('.thirdScreen');
+      $(thirdScreen).show();
+      var score = $('#score')
+      anime({
+        targets: secondScreen,
+        opacity: 0,
+        // translateX: 300,
+        translateX: 1000,
+        duration: 500
+
+        });
+        anime({
+          targets: thirdScreen,
+          opacity: 100,
+          // translateX: 300,
+          translateX: [300, 0],
+          duration: 500,
+          delay: 500
+
+          });
+          anime({
+            targets: thirdScreen,
+            opacity: 100,
+            // translateX: 300,
+            translateX: [300, 0],
+            duration: 300,
+            delay: 500
+
+            });
+
+            setTimeout(function(){
+              var obj = { charged: 0 };
+              let scoreTimer = Math.round(globalTimer1) / 10;
+              var JSobject = anime({
+                targets: obj,
+                charged: scoreTimer,
+                round: 1,
+                easing: 'linear',
+                delay: 3400,
+                update: function() {
+                  var el = document.querySelector('#score');
+                  el.innerHTML = JSON.stringify(obj.charged);
+                }
+              });
+              JSobject.play;
+            }, 1000);
+            setTimeout(function(){
+              var objTime = { charged: 0 + " seconds" };
+              let scoreTimer = Math.round(globalTimer1) / 10;
+              var JSobjectTime = anime({
+                targets: objTime,
+                charged: globalTimer1 + " seconds",
+                round: 1,
+                easing: 'linear',
+                delay: 5000,
+                update: function() {
+                  var el = document.querySelector('#time');
+                  el.innerHTML = objTime.charged;
+                }
+              });
+              JSobjectTime.play;
+            }, 1000);
+            // var domAttributes = anime({
+            //   targets: '#score',
+            //   value: 1000,
+            //   round: 1,
+            //   easing: 'easeInOutExpo',
+            //   delay: 1000
+            // });
+            // domAttributes.play;
       break;
   }
 }

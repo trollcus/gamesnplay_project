@@ -3,18 +3,187 @@
     <head>
         <title>Arduino</title>
         <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" type="text/css" href="./public/style.css">
+        <style>
+        body {
+          margin: 0;
+          background: black;
+        }
+
+        .screenContainer {
+          color: yellow;
+          padding: 2rem;
+          height: 100%;
+          font-family: 'Press Start 2P', cursive;
+        }
+
+        .title {
+          font-size: 6rem;
+          width: 100%;
+          margin-top: 4rem;
+          margin-bottom: 4rem;
+          text-align: center;
+          margin-bottom: 4rem;
+        }
+
+        .inputHeader {
+          font-size: 1.8rem;
+          text-align: center;
+          width: 50%;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 1rem;
+          background-color: red;
+          top: 4rem;
+        }
+
+        .input {
+          font-size: 3rem;
+          color: yellow;
+          display: block;
+          margin-top: 3rem;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 1rem;
+          background-color: black;
+          width: 50%;
+          font-family: 'Press Start 2P', cursive;
+        }
+
+        .buttons {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 2em;
+        }
+
+        button {
+          padding: 1.4em 2em;
+          font-size: 1.1rem;
+          outline: none;
+          background-color: yellow;
+          color: black;
+          border: none;
+          font-family: 'Press Start 2P', cursive;
+          margin: 0.3em;
+          transition: 0.2s;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background-color: #E6DE00;
+        }
+
+        .displayTop {
+          background: transparent;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          flex-wrap: nowrap;
+          width: 100%;
+          margin-bottom: 4rem;
+        }
+
+        .playerName {
+          background-color: black;
+          left: 0;
+          padding-left: 4rem;
+        }
+
+        .time {
+          background-color: transparent;
+          right: 0;
+        }
+
+        .score {
+          position: relative;
+          font-size: 20rem;
+          top: 4rem;
+          margin-bottom: 11rem;
+          text-align: center;
+        }
+
+        .statusFrame {
+          display: block;
+          margin: auto;
+          padding: 1rem;
+          background-color: green;
+          width: 50%;
+        }
+
+        .status {
+          border: .1rem white solid;
+          padding: 1rem;
+          text-align: center;
+          margin: auto;
+        }
+
+        .secondScreen {
+          display: none;
+          opacity: 0;
+        }
+
+        .scoreHeader {
+          font-size: 4rem;
+          width: 100%;
+          margin-top: 4rem;
+          margin-bottom: 4rem;
+          text-align: center;
+          margin-bottom: 4rem;
+        }
+
+        .scoreThird {
+          font-size: 8rem;
+          text-align: center;
+          width: 30%;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 1rem;
+          top: 4rem;
+        }
+
+
+        .timeHeader {
+          font-size: 4rem;
+          width: 100%;
+          margin-top: 4rem;
+          margin-bottom: 4rem;
+          text-align: center;
+          margin-bottom: 4rem;
+        }
+
+        .timeThird {
+          font-size: 4rem;
+          width: 100%;
+          margin-top: 4rem;
+          margin-bottom: 4rem;
+          text-align: center;
+          margin-bottom: 4rem;
+        }
+
+        .thirdScreen {
+          display: none;
+        }
+
+        </style>
+
     </head>
     <body>
         <div class="screenContainer">
+          <div class="endScreen thirdScreen">
+            <div class="scoreHeader thirdScreen">Your salary:</div>
+            <div class="scoreThird thirdScreen">¢<span id="score"></span></div>
+            <div class="timeHeader thirdScreen">Total worktime:</div>
+            <div id="time" class="timeThird thirdScreen"></div>
+          </div>
           <div class="secondScreenItems secondScreen">
             <div class="displayTop secondScreen">
                 <div class="playerName secondScreen">Worker: <span id="playerNameDynamic"></span></div>
                 <div id="time" class="time secondScreen">Elapsed Time: <span id="timeDynamic"></span></div>
             </div>
-            <div id="score" class="score secondScreen">0</div>
+            <div id="Bigscore" class="score secondScreen">0</div>
             <div class="statusFrame secondScreen">
-            <div class="status secondScreen">Status: <span id="statusMessage" class="statusMessage"></span></div>
+            <div class="status secondScreen">Status: <span id="statusMessage" class="statusMessage">OK</span></div>
           </div>
         </div>
             <div id="title" class="title firstScreen">Name of the game</div>
