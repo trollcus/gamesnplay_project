@@ -138,7 +138,7 @@ $( document ).ready(function() {
   // });
     setTimeout(function(){
       gameStart.play();
-    }, 1500);
+    }, 2000);
 
     console.log( "ready!" );
 });
@@ -266,6 +266,7 @@ function updateSong(returner) {
     //     soundChecker['ifEffect'] = false;
     // }
     // group.stop(); // Stopping sound eachtime
+
     let randNum = Math.floor(Math.random() * (gamePads.length - 0) + 0);
     // console.log(randNum);
     if(gamePads.length == 0) {
@@ -300,7 +301,7 @@ function updateSong(returner) {
     pushSong = setTimeout(function(){
       console.log('Pushed ' +  songPlaying + ' to gamePads array');
       gamePads.push(songPlaying);
-    }, gameInterval + 500);
+    }, gameInterval + 1000);
 
     // socket.emit('LEDfeedback', soundArray[randNum].pin); // Emit to the LEDs the current pad
     // console.log(gamePads[randNum].timer);
@@ -352,7 +353,6 @@ function compareNumber(padPin){
     let pinPlayed = song.pin; // Check the current sounds Pin number
     // console.log(entry);
     if(padPin == pinPlayed) { // If the current pad which is being pressed is the same as the current sound Pin  is true
-      color();
       song.canBeFailed = false;
       clearTimeout(failingSong);
       song.general.stop(); // Stop the song playing
@@ -374,11 +374,11 @@ function compareNumber(padPin){
       return true; // Return a true value if called upon from elsewhere in document
     } else {
       wrongPad++;
-      if(wrongPad > 2 && wrongPad % 3 == 0) {
+      if(wrongPad > 2 && wrongPad % 5 == 0) {
         let randomNumberNegative = Math.floor(Math.random() * NegativeFeedback.length) + 0;
         setTimeout(function(){
           NegativeFeedback[randomNumberNegative].play();
-        }, 500);
+        }, 200);
       }
       gameSpeed = gameSpeed + 0.015;
       // console.log('Game speed: ' + gameSpeed);
@@ -594,11 +594,15 @@ function startGame(name){
   let arrayChecker = setInterval(function(){
     $('#statusMessage').text('OK');
     $('#statusMessage').css('background-color', 'green');
-    if(soundChecker.length > 2) {
+    if(soundChecker.length < 2) {
+      $('#statusMessage').text('OK');
+      $('#statusMessage').css('background-color', 'green');
+    }
+    if(soundChecker.length == 2) {
       $('#statusMessage').text('CRITICAL');
       $('#statusMessage').css('background-color', 'red');
     }
-    if(soundChecker.length > 3){
+    if(soundChecker.length >= 3){
       console.log('Ended');
       endGame(gameName);
       clearInterval(arrayChecker);
@@ -630,7 +634,8 @@ function startGame(name){
         break;
       case alarmPad:
         timeStamp = Math.round(endGlobalTimer());
-        alarmPad = Math.floor(Math.random() * (timeStamp + 55)) + (timeStamp + 25);
+        alarmPad = Math.floor(Math.random() * (timeStamp + 75)) + (timeStamp + 55);
+        console.log(alarmPad);
         gameChanger();
         gameSave = true;
         gameReset.play();
@@ -690,6 +695,39 @@ function startGame(name){
         }, 4000 / gameSpeed);
         console.log('Game is running at speed ' + gameSpeed + 'X');
         break;
+      case 230:
+        feedbackNegative11.play();
+        gameSpeed = gameSpeed + 0.13;
+        gameInterval = 4000 / gameSpeed;
+        clearInterval(songUpdater);
+        songUpdater = setInterval(function(){
+          console.log(gameSpeed);
+          updateSong(false);
+        }, 4000 / gameSpeed);
+        console.log('Game is running at speed ' + gameSpeed + 'X');
+        break;
+      case 250:
+        feedbackNegative11.play();
+        gameSpeed = gameSpeed + 0.1;
+        gameInterval = 4000 / gameSpeed;
+        clearInterval(songUpdater);
+        songUpdater = setInterval(function(){
+          console.log(gameSpeed);
+          updateSong(false);
+        }, 4000 / gameSpeed);
+        console.log('Game is running at speed ' + gameSpeed + 'X');
+        break;
+      case 250:
+        feedbackNegative11.play();
+        gameSpeed = gameSpeed + 0.2;
+        gameInterval = 4000 / gameSpeed;
+        clearInterval(songUpdater);
+        songUpdater = setInterval(function(){
+          console.log(gameSpeed);
+          updateSong(false);
+        }, 4000 / gameSpeed);
+        console.log('Game is running at speed ' + gameSpeed + 'X');
+        break;
     }
 
   }, 1000);
@@ -708,17 +746,20 @@ function startGame(name){
 
 function gameChanger(state){
 
-  if(gameSave == true) {
-    systemNormal.play();
-    setTimeout(function(){
-      gameSave = false;
-    }, 12000 / gameSpeed);
-    setTimeout(function(){
-      systemNormal.stop();
-    }, 3000);
+
     // If you make it it will reset the game
-    gameReset.stop();
     group.stop();
+    gameReset.stop();
+    if(gameSave == true) {
+      console.log('Normal start');
+      systemNormal.play();
+      setTimeout(function(){
+        gameSave = false;
+      }, 12000 / gameSpeed);
+      setTimeout(function(){
+        console.log('Normal stop');
+        systemNormal.stop();
+      }, 3000);
     clearTimeout(failingSong);
     clearTimeout(successSong);
     clearTimeout(pushSong);
@@ -757,6 +798,7 @@ function gameChanger(state){
 function endGame(name){
   switchToScreen('endscreen');
   gameStart.stop();
+  gameReset.stop();
   updateSong(true);
   arrayInitializer(true);
   clearInterval(timeChecker);
@@ -895,6 +937,7 @@ function switchToScreen(screen){
             setTimeout(function(){
               var obj = { charged: 0 };
               let scoreTimer = Math.round(globalTimer1) / 10;
+              scoreTimer = scoreTimer * (amountCorrect / 25)
               var JSobject = anime({
                 targets: obj,
                 charged: scoreTimer,

@@ -326,7 +326,8 @@ const button = new five.Buttons([
     button.on("press", function(button) {
       console.log(button.pin);
       let elapsedGlobal = new Date().getTime() - startTimerVar;
-      if(elapsedGlobal > 500) {
+      if(elapsedGlobal > 1000) {
+        console.log(elapsedGlobal);
         startTimerVar = new Date().getTime();
         let buttonId = button.pin;
         // console.log(button.pin);
